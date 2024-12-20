@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Sample {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   name      String
   code      String   @unique
   createdAt DateTime @default(now())
@@ -21,7 +21,7 @@ model Sample {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  id        String     @id @default(cuid())
   name      String
   email     String     @unique
   username  String     @unique
@@ -35,7 +35,7 @@ model User {
 }
 
 model Product {
-  id           Int        @id @default(autoincrement())
+  id           String     @id @default(cuid())
   name         String
   description  String?
   price        Int
@@ -44,7 +44,7 @@ model Product {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   Category     Category?  @relation(fields: [categoryId], references: [id])
-  categoryId   Int?
+  categoryId   String?
   Wishlist     Wishlist[]
   Cart         Cart[]
 
@@ -52,7 +52,7 @@ model Product {
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
+  id        String    @id @default(cuid())
   name      String
   Product   Product[]
   createdAt DateTime  @default(now())
@@ -62,11 +62,11 @@ model Category {
 }
 
 model Wishlist {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int?
+  productId String?
   User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int?
+  userId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -74,12 +74,12 @@ model Wishlist {
 }
 
 model Cart {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   quantity  Int
   Product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int?
+  productId String?
   User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int?
+  userId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

@@ -15,7 +15,7 @@ export class SampleController {
     try {
       const { id } = req.params;
       const sample = await prisma.sample.findUnique({
-        where: { id: Number(id) },
+        where: { id: String(id) },
       });
 
       if (!sample) {

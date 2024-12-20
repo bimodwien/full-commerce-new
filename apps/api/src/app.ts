@@ -8,6 +8,7 @@ import express, {
   Router,
 } from 'express';
 import cors from 'cors';
+import { corsOption } from './config/index';
 import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 
@@ -22,7 +23,7 @@ export default class App {
   }
 
   private configure(): void {
-    this.app.use(cors());
+    this.app.use(cors(corsOption));
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
   }
@@ -54,7 +55,7 @@ export default class App {
     const sampleRouter = new SampleRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
-      res.send(`Hello, Purwadhika Student API!`);
+      res.send(`Hello, Welcome to TokoPaBimo API!`);
     });
 
     this.app.use('/api/samples', sampleRouter.getRouter());
