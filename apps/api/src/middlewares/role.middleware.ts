@@ -6,17 +6,20 @@ export const verifyAdmin = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const userId = req.user?.id as string;
+  try {
+    const userId = req.user?.id as string;
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
-  if (!user || user.role !== 'admin') {
-    return res
-      .status(401)
-      .json({ message: 'Unauthorized, only admin can access this API' });
+    if (!user || user.role !== 'admin') {
+      const error = new Error('Unauthorized, only admin can access this API');
+      return next(error);
+    }
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  next();
 };
 
 export const verifyUser = async (
@@ -24,15 +27,18 @@ export const verifyUser = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const userId = req.user?.id as string;
+  try {
+    const userId = req.user?.id as string;
 
-  const user = await prisma.user.findUnique({ where: { id: userId } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
-  if (!user || user.role !== 'user') {
-    return res
-      .status(401)
-      .json({ message: 'Unauthorized, only user can access this API' });
+    if (!user || user.role !== 'user') {
+      const error = new Error('Unauthorized, only user can access this API');
+      return next(error);
+    }
+
+    next();
+  } catch (error) {
+    next(error);
   }
-
-  next();
 };
