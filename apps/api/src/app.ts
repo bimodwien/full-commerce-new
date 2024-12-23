@@ -11,6 +11,7 @@ import cors from 'cors';
 import { corsOption } from './config/index';
 import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
+import { UserRouter } from './routers/user.router';
 
 export default class App {
   private app: Express;
@@ -53,12 +54,14 @@ export default class App {
 
   private routes(): void {
     const sampleRouter = new SampleRouter();
+    const userRouter = new UserRouter();
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Welcome to TokoPaBimo API!`);
     });
 
     this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use('/api/users', userRouter.getRouter());
   }
 
   public start(): void {
