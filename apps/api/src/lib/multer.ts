@@ -14,10 +14,6 @@ const multerConfig: multer.Options = {
     if (file.mimetype.split('/')[0] !== 'image') {
       return cb(new Error('Only image files are allowed!'));
     }
-    // const fileSize = parseInt(req.headers['content-length'] || '');
-    // if (fileSize > maxSize) {
-    //   return cb(new Error('File size is too large!'));
-    // }
     cb(null, true);
   },
   limits: {

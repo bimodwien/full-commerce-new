@@ -3,7 +3,6 @@
 import { Request } from 'express';
 import prisma from '@/prisma';
 import { Prisma } from '@prisma/client';
-import { TProduct } from '@/models/product.model';
 import sharp from 'sharp';
 
 class ProductService {
@@ -21,6 +20,7 @@ class ProductService {
         name: true,
         price: true,
         stock: true,
+        description: true,
         productImage: true,
         Category: {
           select: {
