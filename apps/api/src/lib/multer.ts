@@ -3,7 +3,7 @@
 import multer, { FileFilterCallback } from 'multer';
 import { type Request } from 'express';
 
-const maxSize = 10 * 1024 * 1024;
+const maxSize = 1048576;
 
 const multerConfig: multer.Options = {
   fileFilter: (
@@ -12,13 +12,15 @@ const multerConfig: multer.Options = {
     cb: FileFilterCallback,
   ) => {
     if (file.mimetype.split('/')[0] !== 'image') {
-      return cb(new Error('Only image files are allowed!'));
+      return cb(new Error('This file is not an image'));
     }
-    cb(null, true);
+    const fileSize = parseInt(req.headers['content-length'] || '');
+    if (fileSize > maxSize) {
+      return cb(new Error('Maximum file is 1mb'));
+    }
+    return cb(null, true);
   },
-  limits: {
-    fileSize: maxSize,
-  },
+  limits: { fileSize: maxSize },
 };
 
 export const blobUploader = () => {
