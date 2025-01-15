@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
+
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
 
@@ -27,7 +28,6 @@ export function middleware(request: NextRequest) {
         return response;
       }
     }
-    // jika tidak ada token, user tetap boleh mengakses '/'
     return NextResponse.next();
   }
 
