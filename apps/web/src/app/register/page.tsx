@@ -1,11 +1,12 @@
 import React from 'react';
+import RegisterForm from './_components/register.form';
 
 type Props = {};
 
 function Register({}: Props) {
   return (
     <>
-      <div>Register</div>
+      <RegisterForm />
     </>
   );
 }
