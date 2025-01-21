@@ -7,6 +7,10 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { userLogin } from '@/lib/redux/middleware/auth.middleware';
 import { AxiosError } from 'axios';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -43,71 +47,55 @@ const LoginForm = () => {
   });
 
   return (
-    <section>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <Link
-          href={'/'}
-          className="flex items-center mb-6 text-2xl font-semibold text-[#212121] font-poppins"
-        >
-          TokoPaBimo
-        </Link>
-        <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl font-poppins">
-              Sign in to your account
-            </h1>
-            <form
-              onSubmit={formik.handleSubmit}
-              className="space-y-4 md:space-y-6"
-            >
-              <div>
-                <label
-                  htmlFor="username"
-                  className="block mb-2 text-sm font-medium text-gray-900 font-poppins"
-                >
-                  Username
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  className="bg-[#FBFBFB] border border-gray-300 text-gray-900 rounded-lg focus:ring-[#212121] focus:border-[#212121] focus:outline-none block w-full p-2.5"
-                  {...formik.getFieldProps('username')}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 font-poppins"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  className="bg-[#FBFBFB] border border-gray-300 text-gray-900 rounded-lg focus:ring-[#212121] focus:border-[#212121] focus:outline-none block w-full p-2.5"
-                  {...formik.getFieldProps('password')}
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full text-white bg-[#212121] hover:bg-[#1D1616] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center font-poppins"
+    <div className="flex flex-col items-center justify-center min-h-screen px-6 py-8">
+      <Link
+        href={'/'}
+        className="flex items-center mb-6 text-2xl font-semibold text-[#212121]"
+      >
+        TokoPaBimo
+      </Link>
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+            Sign in to your account
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={formik.handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                {...formik.getFieldProps('username')}
+                className="bg-[#FBFBFB]"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                {...formik.getFieldProps('password')}
+                className="bg-[#FBFBFB]"
+              />
+            </div>
+            <Button type="submit" className="w-full ">
+              Sign In
+            </Button>
+            <p className="text-sm font-light text-black">
+              Don&#39;t have an account?{' '}
+              <Link
+                href={'/register'}
+                className="font-medium text-[#212121] hover:underline"
               >
-                Sign In
-              </button>
-              <p className="text-sm font-light text-black font-poppins">
-                Don&#39;t have an account?{' '}
-                <Link
-                  href={'/register'}
-                  className="font-medium text-[#212121] hover:underline font-poppins"
-                >
-                  Sign Up
-                </Link>
-              </p>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
+                Sign Up
+              </Link>
+            </p>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -5,7 +5,7 @@ type Props = {};
 function Product({}: Props) {
   return (
     <main>
-      <div>Product</div>
+      <div>Ini halaman create product</div>
     </main>
   );
 }

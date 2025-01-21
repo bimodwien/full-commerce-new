@@ -21,7 +21,6 @@ class ProductService {
         price: true,
         stock: true,
         description: true,
-        productImage: true,
         Category: {
           select: {
             id: true,
