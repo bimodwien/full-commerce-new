@@ -19,7 +19,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
-function EditCategory({ params }: { params: { id: string } }) {
+function EditCategory() {
   const router = useRouter();
   const { id } = useParams();
   const [initialValues, setInitialValues] = useState({ name: '' });
@@ -30,8 +30,6 @@ function EditCategory({ params }: { params: { id: string } }) {
       try {
         const response = await axiosInstance().get(`/categories/${id}`);
         const categoryData = response.data.category;
-        console.log('ini nama dari category: ', categoryData.name);
-
         setInitialValues({
           name: categoryData.name,
         });
@@ -40,7 +38,6 @@ function EditCategory({ params }: { params: { id: string } }) {
       }
     }
     categoryDetails();
-    console.log('ini initial valuesnya: ', initialValues);
   }, [id]);
 
   const formik = useFormik({
