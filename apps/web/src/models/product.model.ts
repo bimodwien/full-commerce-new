@@ -1,3 +1,5 @@
+import { TCategory } from './category.model';
+
 export type TProduct = {
   id: string;
   name: string;
@@ -5,4 +7,5 @@ export type TProduct = {
   price: number;
   stock: number;
   productImage: string;
+  Category: TCategory;
 };

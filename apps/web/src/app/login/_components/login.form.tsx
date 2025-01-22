@@ -11,8 +11,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
+  const { toast } = useToast();
   const dispatch = useAppDispatch();
   const initialValues = {
     username: '',
@@ -30,7 +32,9 @@ const LoginForm = () => {
         await dispatch(
           userLogin({ username: values.username, password: values.password }),
         );
-        alert('Login success');
+        toast({
+          description: 'Login success',
+        });
         window.location.href = '/';
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';

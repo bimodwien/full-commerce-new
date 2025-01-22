@@ -2,7 +2,7 @@ import { TCategory } from '@/models/category.model';
 import { axiosInstance } from '@/lib/axios';
 
 interface ApiResponse {
-  categories: {
+  category: {
     data: TCategory[];
     page: number;
     limit: number;
@@ -21,4 +21,13 @@ export async function fetchCategory(
     params: { page, limit, name },
   });
   return data;
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  const axios = axiosInstance();
+  try {
+    await axios.delete(`/categories/${id}`);
+  } catch (error) {
+    console.error(error);
+  }
 }

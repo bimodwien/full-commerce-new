@@ -89,6 +89,7 @@ export function ProductList() {
                 <TableHead className="hidden md:table-cell">
                   Description
                 </TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead className="hidden sm:table-cell">Stock</TableHead>
                 <TableHead>Actions</TableHead>
@@ -110,6 +111,7 @@ export function ProductList() {
                   <TableCell className="hidden md:table-cell">
                     {product.description}
                   </TableCell>
+                  <TableCell>{product.Category.name}</TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {product.stock}
