@@ -1,13 +1,13 @@
 'use client';
-
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { axiosInstance } from '@/lib/axios';
-import { useRouter } from 'next/navigation';
-import { TCategory } from '@/models/category.model';
-import { TProduct } from '@/models/product.model';
 import { fetchCategory } from '@/helpers/fetchCategory';
+import { TCategory } from '@/models/category.model';
+import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Sidebar } from '@/components/Sidebar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
@@ -30,36 +30,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import axios from 'axios';
-import { useToast } from '@/hooks/use-toast';
+import { TProduct } from '@/models/product.model';
 
-function CreateProduct() {
-  const initialValues = {
+const EditProduct = () => {
+  const params = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const { id } = params;
+  const [initialValues, setInitialValues] = useState({
     name: '',
     description: '',
     price: 0,
     stock: 0,
     categoryId: '',
-  };
+  });
   const imageRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [categories, setCategories] = useState<TCategory[]>([]);
-  const router = useRouter();
-  const { toast } = useToast();
 
   useEffect(() => {
-    (async () => {
+    async function fetchProductDetail() {
       try {
-        const response = await fetchCategory(1, 0, '');
-        setCategories(response.category.data);
+        const response = await axiosInstance().get(`/products/${id}`);
+        const productData = response.data.product as TProduct;
+        setInitialValues({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          stock: productData.stock,
+          categoryId: productData.Category.id,
+        });
+        const image = `http://localhost:8000/api/products/images/${productData.id}`;
+        setImagePreview(image);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        if (axios.isAxiosError(error)) {
+          console.log('AXIOS ERROR:', error.response?.status);
+          console.log('AXIOS DATA:', error.response?.data);
+        } else {
+          console.error('UNKNOWN ERROR:', error);
+        }
       }
-    })();
-  }, []);
+    }
+
+    async function fetchCategories() {
+      const response = await fetchCategory(1, 10, '');
+      setCategories(response.category.data);
+    }
+
+    fetchProductDetail();
+    fetchCategories();
+  }, [id]);
 
   const formik = useFormik({
     initialValues,
+    enableReinitialize: true,
     validationSchema: Yup.object().shape({
       name: Yup.string().required('Product name is required'),
       description: Yup.string().required('Product description is required'),
@@ -69,8 +93,8 @@ function CreateProduct() {
     }),
     onSubmit: async (values) => {
       try {
-        const { data } = await axiosInstance().post<TProduct>(
-          '/products',
+        const { data } = await axiosInstance().patch(
+          `/products/${id}`,
           values,
           {
             headers: {
@@ -79,7 +103,7 @@ function CreateProduct() {
           },
         );
         toast({
-          description: 'Product created successfully',
+          description: 'Product updated successfully',
         });
         router.push('/dashboard');
       } catch (error) {
@@ -105,19 +129,19 @@ function CreateProduct() {
 
   return (
     <SidebarProvider>
-      <div className="flex h-screen overflow-hidden w-full">
+      <div className="flex h-screen overflow-hidden">
         <Sidebar />
-        <div className="flex-1 overflow-y-auto w-full">
-          <header className="flex items-center h-16 px-2 border-b bg-white">
+        <div className="flex-1 overflow-y-auto">
+          <header className="flex items-center h-16 px-4 border-b bg-white">
             <SidebarTrigger className="lg:hidden" />
-            <h1 className="text-2xl font-bold ml-4">Dashboard</h1>
+            <h1 className="text-2xl font-bold ml-4">Edit Product</h1>
           </header>
           <main className="p-6">
-            <Card className="max-w-5xl">
+            <Card className="max-w-2xl mx-auto">
               <CardHeader>
-                <CardTitle>Create New Product</CardTitle>
+                <CardTitle>Edit Product</CardTitle>
                 <CardDescription>
-                  Add a new product to your catalog.
+                  Update the details of your product.
                 </CardDescription>
               </CardHeader>
               <form onSubmit={formik.handleSubmit}>
@@ -125,9 +149,9 @@ function CreateProduct() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className="flex flex-col space-y-1.5">
-                        <Label htmlFor="productName">Product Name</Label>
+                        <Label htmlFor="name">Product Name</Label>
                         <Input
-                          id="productName"
+                          id="name"
                           placeholder="Enter product name"
                           {...formik.getFieldProps('name')}
                           required
@@ -191,8 +215,8 @@ function CreateProduct() {
                           id="image"
                           type="file"
                           accept="image/*"
-                          onChange={() => handleImage()}
                           ref={imageRef}
+                          onChange={() => handleImage()}
                         />
                         {imagePreview && (
                           <div className="mt-2">
@@ -216,7 +240,7 @@ function CreateProduct() {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit">Create Product</Button>
+                  <Button type="submit">Update Product</Button>
                 </CardFooter>
               </form>
             </Card>
@@ -225,6 +249,6 @@ function CreateProduct() {
       </div>
     </SidebarProvider>
   );
-}
+};
 
-export default CreateProduct;
+export default EditProduct;

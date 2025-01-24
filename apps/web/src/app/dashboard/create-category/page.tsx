@@ -19,9 +19,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { axiosInstance } from '@/lib/axios';
 
-type Props = {};
-
-function CreateCategory({}: Props) {
+function CreateCategory() {
   const router = useRouter();
   const { toast } = useToast();
   const initialValues = {
@@ -57,7 +55,7 @@ function CreateCategory({}: Props) {
               <h1 className="text-2xl font-bold ml-4">Categories</h1>
             </header>
             <main className="p-6">
-              <Card className="max-w-2xl mx-auto">
+              <Card className="max-w-2xl">
                 <CardHeader>
                   <CardTitle>Create New Category</CardTitle>
                   <CardDescription>

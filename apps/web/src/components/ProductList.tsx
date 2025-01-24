@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { fetchProduct } from '@/helpers/fetchProduct';
+import { fetchProduct, deleteProduct } from '@/helpers/fetchProduct';
 import { useDebounce } from 'use-debounce';
 import type { TProduct } from '@/models/product.model';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -19,6 +19,8 @@ import { Button } from '@/components/ui/button';
 import { SearchBar } from '@/components/SearchBar';
 import { Pagination } from '@/components/Pagination';
 import { Pencil, Trash2 } from 'lucide-react';
+import { axiosInstance } from '@/lib/axios';
+import { useToast } from '@/hooks/use-toast';
 
 interface ApiResponse {
   products: {
@@ -37,6 +39,7 @@ export function ProductList() {
   const [limit, setLimit] = useState(10);
   const [value] = useDebounce(search, 1000);
   const [totalPages, setTotalPages] = useState(1);
+  const { toast } = useToast();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -61,9 +64,27 @@ export function ProductList() {
     setPage(newPage);
   };
 
-  const handleDelete = (id: string) => {
-    // Implement delete logic here
-    console.log(`Delete product with id: ${id}`);
+  const handleEdit = async (id: string) => {
+    const axios = axiosInstance();
+    try {
+      await axios.get(`/products/${id}`);
+    } catch (error) {
+      console.error('Error to edit products:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id);
+      const response = await fetchProduct(page, limit, value);
+      setProducts(response.products.data);
+      setTotalPages(response.products.totalPages);
+      toast({
+        description: 'Product deleted successfully',
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -102,12 +123,14 @@ export function ProductList() {
                     <Image
                       src={`http://localhost:8000/api/products/images/${product.id}`}
                       alt={product.name}
-                      width={50}
-                      height={50}
+                      width={100}
+                      height={100}
                       className="rounded-md object-cover"
                     />
                   </TableCell>
-                  <TableCell className="font-medium">{product.name}</TableCell>
+                  <TableCell className="font-semibold">
+                    {product.name}
+                  </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {product.description}
                   </TableCell>
@@ -122,7 +145,11 @@ export function ProductList() {
                         href={`/dashboard/edit-product/${product.id}`}
                         passHref
                       >
-                        <Button size="sm" variant="outline">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEdit(product.id)}
+                        >
                           <Pencil className="h-4 w-4" />
                           <span className="sr-only">Edit</span>
                         </Button>

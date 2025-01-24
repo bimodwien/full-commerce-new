@@ -49,7 +49,6 @@ class ProductService {
         description: true,
         price: true,
         stock: true,
-        productImage: true,
         Category: {
           select: {
             id: true,
@@ -102,8 +101,8 @@ class ProductService {
       const data: Prisma.ProductUpdateInput = {};
       if (name) data.name = name;
       if (description) data.description = description;
-      if (price) data.price = price;
-      if (stock) data.stock = stock;
+      if (price) data.price = Number(price);
+      if (stock) data.stock = Number(stock);
       if (categoryId) {
         const category = await prisma.category.findUnique({
           where: { id: String(categoryId) },

@@ -22,3 +22,12 @@ export async function fetchProduct(
   });
   return data;
 }
+
+export async function deleteProduct(id: string): Promise<void> {
+  const axios = axiosInstance();
+  try {
+    await axios.delete(`/products/${id}`);
+  } catch (error) {
+    console.error(error);
+  }
+}
