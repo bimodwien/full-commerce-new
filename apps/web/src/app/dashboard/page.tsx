@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Sidebar } from '@/components/Sidebar';
 import { ProductList } from '@/components/ProductList';
@@ -16,7 +16,9 @@ const Dashboard = () => {
             <h1 className="text-2xl font-bold ml-4">Dashboard</h1>
           </header>
           <main className="p-6 w-full">
-            <ProductList />
+            <Suspense fallback={<div>Loading Product List...</div>}>
+              <ProductList />
+            </Suspense>
           </main>
         </div>
       </div>

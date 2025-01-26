@@ -47,7 +47,8 @@ const EditProduct = () => {
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const imageRef = useRef<HTMLInputElement>(null); // Tambahkan ref untuk file input
+  const imageRef = useRef<HTMLInputElement>(null);
+  const formikRef = useRef<any>(null);
 
   const formik = useFormik({
     initialValues,
@@ -83,6 +84,10 @@ const EditProduct = () => {
   });
 
   useEffect(() => {
+    formikRef.current = formik;
+  }, [formik]);
+
+  useEffect(() => {
     async function fetchData() {
       try {
         const [productResponse, categoryResponse] = await Promise.all([
@@ -102,7 +107,7 @@ const EditProduct = () => {
           `http://localhost:8000/api/products/images/${productData.id}`,
         );
 
-        formik.setFieldValue('categoryId', productData.Category.id);
+        formikRef.current?.setFieldValue('categoryId', productData.Category.id);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
