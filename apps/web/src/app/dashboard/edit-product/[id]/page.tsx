@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { axiosInstance } from '@/lib/axios';
 import { fetchCategory } from '@/helpers/fetchCategory';
 import { TCategory } from '@/models/category.model';
-import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Sidebar } from '@/components/Sidebar';
@@ -37,6 +36,7 @@ const EditProduct = () => {
   const router = useRouter();
   const { toast } = useToast();
   const { id } = params;
+
   const [initialValues, setInitialValues] = useState({
     name: '',
     description: '',
@@ -44,42 +44,10 @@ const EditProduct = () => {
     stock: 0,
     categoryId: '',
   });
-  const imageRef = useRef<HTMLInputElement>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [categories, setCategories] = useState<TCategory[]>([]);
-
-  useEffect(() => {
-    async function fetchProductDetail() {
-      try {
-        const response = await axiosInstance().get(`/products/${id}`);
-        const productData = response.data.product as TProduct;
-        setInitialValues({
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          stock: productData.stock,
-          categoryId: productData.Category.id,
-        });
-        const image = `http://localhost:8000/api/products/images/${productData.id}`;
-        setImagePreview(image);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('AXIOS ERROR:', error.response?.status);
-          console.log('AXIOS DATA:', error.response?.data);
-        } else {
-          console.error('UNKNOWN ERROR:', error);
-        }
-      }
-    }
-
-    async function fetchCategories() {
-      const response = await fetchCategory(1, 10, '');
-      setCategories(response.category.data);
-    }
-
-    fetchProductDetail();
-    fetchCategories();
-  }, [id]);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const imageRef = useRef<HTMLInputElement>(null); // Tambahkan ref untuk file input
 
   const formik = useFormik({
     initialValues,
@@ -93,37 +61,66 @@ const EditProduct = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const { data } = await axiosInstance().patch(
-          `/products/${id}`,
-          values,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          },
-        );
-        toast({
-          description: 'Product updated successfully',
-        });
-        router.push('/dashboard');
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          console.log('AXIOS ERROR:', error.response?.status);
-          console.log('AXIOS DATA:', error.response?.data);
-        } else {
-          console.error('UNKNOWN ERROR:', error);
+        const formData = new FormData();
+        formData.append('name', values.name);
+        formData.append('description', values.description);
+        formData.append('price', String(values.price));
+        formData.append('stock', String(values.stock));
+        formData.append('categoryId', values.categoryId);
+        if (imageRef.current?.files && imageRef.current.files[0]) {
+          formData.append('productImage', imageRef.current.files[0]);
         }
+
+        await axiosInstance().patch(`/products/${id}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        toast({ description: 'Product updated successfully' });
+        router.push('/dashboard?refresh=true');
+      } catch (error) {
+        console.error('Error submitting form:', error);
       }
     },
   });
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [productResponse, categoryResponse] = await Promise.all([
+          axiosInstance().get(`/products/${id}`),
+          fetchCategory(1, 10, ''),
+        ]);
+        const productData = productResponse.data.product as TProduct;
+        setInitialValues({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          stock: productData.stock,
+          categoryId: productData.Category.id,
+        });
+        setCategories(categoryResponse.category.data);
+        setImagePreview(
+          `http://localhost:8000/api/products/images/${productData.id}`,
+        );
+
+        formik.setFieldValue('categoryId', productData.Category.id);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   function handleImage() {
     if (imageRef.current?.files && imageRef.current.files[0]) {
       const file = imageRef.current.files[0];
       setImagePreview(URL.createObjectURL(file));
       formik.setFieldValue('productImage', file);
-      console.log('file selected: ', file);
-      console.log('image product: ', URL.createObjectURL(file));
     }
   }
 
@@ -198,7 +195,13 @@ const EditProduct = () => {
                           }
                         >
                           <SelectTrigger id="category">
-                            <SelectValue placeholder="Select a category" />
+                            <SelectValue
+                              placeholder={
+                                categories.length === 0
+                                  ? 'Loading categories...'
+                                  : 'Select a category'
+                              }
+                            />
                           </SelectTrigger>
                           <SelectContent>
                             {categories.map((cat) => (

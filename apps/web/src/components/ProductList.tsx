@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { fetchProduct, deleteProduct } from '@/helpers/fetchProduct';
 import { useDebounce } from 'use-debounce';
 import type { TProduct } from '@/models/product.model';
@@ -37,9 +38,12 @@ export function ProductList() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [timestamp, setTimestamp] = useState(Date.now());
   const [value] = useDebounce(search, 1000);
   const [totalPages, setTotalPages] = useState(1);
   const { toast } = useToast();
+  const searchParams = useSearchParams();
+  const refresh = searchParams.get('refresh');
 
   useEffect(() => {
     const getProducts = async () => {
@@ -47,13 +51,14 @@ export function ProductList() {
         const response: ApiResponse = await fetchProduct(page, limit, value);
         setProducts(response.products.data);
         setTotalPages(response.products.totalPages);
+        setTimestamp(Date.now());
       } catch (error) {
         console.error('Error fetching products:', error);
       }
     };
 
     getProducts();
-  }, [page, limit, value]);
+  }, [page, limit, value, refresh]);
 
   const handleSearch = (query: string) => {
     setSearch(query);
@@ -121,7 +126,7 @@ export function ProductList() {
                 <TableRow key={product.id}>
                   <TableCell>
                     <Image
-                      src={`http://localhost:8000/api/products/images/${product.id}`}
+                      src={`http://localhost:8000/api/products/images/${product.id}?t=${timestamp}`}
                       alt={product.name}
                       width={100}
                       height={100}
