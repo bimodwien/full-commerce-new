@@ -111,7 +111,7 @@ const CategoryList = () => {
             <TableBody>
               {categories.map((category, n) => (
                 <TableRow key={category.id}>
-                  <TableCell>{n + 1}</TableCell>
+                  <TableCell>{(page - 1) * limit + n + 1}</TableCell>
                   <TableCell className="font-medium">{category.name}</TableCell>
                   <TableCell>
                     <div className="flex space-x-2">
