@@ -244,7 +244,10 @@ const EditProduct = () => {
                 <CardFooter className="flex justify-between">
                   <Button
                     variant="outline"
-                    onClick={() => router.push('/dashboard')}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push('/dashboard');
+                    }}
                   >
                     Cancel
                   </Button>
