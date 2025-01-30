@@ -29,14 +29,17 @@ const ProductGrid = (products: ProductGridProps) => {
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.products.map((product) => {
         return (
-          <Card key={product.id} className="flex flex-col">
-            <CardHeader className="relative p-0">
+          <Card
+            key={product.id}
+            className="flex flex-col group hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+          >
+            <CardHeader className="relative p-0 overflow-hidden">
               <Image
                 src={`http://localhost:8000/api/products/images/${product.id}`}
                 alt={product.name}
                 width={400}
                 height={400}
-                className="object-cover w-full h-48 rounded-t-lg"
+                className="object-cover w-full h-48 rounded-t-lg transition-transform duration-300 group-hover:scale-105"
               />
               <Button
                 variant="ghost"
