@@ -23,7 +23,7 @@ export default function Home() {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(12);
   const [value] = useDebounce(search, 1000);
   const [totalPages, setTotalPages] = useState(1);
 
