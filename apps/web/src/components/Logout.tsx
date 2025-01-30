@@ -4,6 +4,7 @@ import { useAppDispatch } from '@/lib/redux/hooks';
 import { logout } from '@/lib/redux/slices/user.slice';
 import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
+import { LogOut } from 'lucide-react';
 
 const Logout = () => {
   const dispatch = useAppDispatch();
@@ -13,7 +14,18 @@ const Logout = () => {
     router.push('/login');
   }
 
-  return <Button onClick={() => loggingout()}>Logout</Button>;
+  return (
+    <Button
+      variant="ghost"
+      className="text-white bg-[#1a1a1a] hover:text-black hover:bg-white border border-white"
+      onClick={() => {
+        loggingout();
+      }}
+    >
+      <LogOut className="h-5 w-5 mr-2" />
+      <span>Log Out</span>
+    </Button>
+  );
 };
 
 export default Logout;
