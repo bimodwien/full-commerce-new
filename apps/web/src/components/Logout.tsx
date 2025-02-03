@@ -17,7 +17,7 @@ const Logout = () => {
   return (
     <Button
       variant="ghost"
-      className="text-white bg-[#1a1a1a] hover:text-black hover:bg-white border border-white"
+      className="text-white bg-[#1a1a1a] hover:text-black hover:bg-white border text-base border-white"
       onClick={() => {
         loggingout();
       }}
