@@ -13,18 +13,17 @@ const ProductDetail = () => {
   const [timestamp, setTimestamp] = useState(Date.now());
   const { id } = useParams();
 
-  async function fetchDetailProduct() {
-    try {
-      const response = await axiosInstance().get(`/products/${id}`);
-      const productData: TProduct = response.data.product;
-      setProduct(productData);
-      setTimestamp(Date.now());
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
+    async function fetchDetailProduct() {
+      try {
+        const response = await axiosInstance().get(`/products/${id}`);
+        const productData: TProduct = response.data.product;
+        setProduct(productData);
+        setTimestamp(Date.now());
+      } catch (error) {
+        console.error(error);
+      }
+    }
     fetchDetailProduct();
   }, [id]);
 
