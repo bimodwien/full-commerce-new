@@ -17,9 +17,10 @@ import Link from 'next/link';
 
 interface ProductGridProps {
   products: TProduct[];
+  timestamp: number;
 }
 
-const ProductGrid = (products: ProductGridProps) => {
+const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
   const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
 
   const toggleFavorite = (productId: string) => {
@@ -28,13 +29,13 @@ const ProductGrid = (products: ProductGridProps) => {
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {products.products.map((product) => {
+      {products.map((product) => {
         return (
           <Link href={`/details/${product.id}`} key={product.id}>
             <Card className="flex flex-col group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
               <CardHeader className="relative p-0 overflow-hidden">
                 <Image
-                  src={`http://localhost:8000/api/products/images/${product.id}`}
+                  src={`http://localhost:8000/api/products/images/${product.id}?timestamp=${timestamp}`}
                   alt={product.name}
                   width={400}
                   height={400}

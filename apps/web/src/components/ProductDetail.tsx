@@ -10,6 +10,7 @@ import Image from 'next/image';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
+  const [timestamp, setTimestamp] = useState(Date.now());
   const { id } = useParams();
 
   async function fetchDetailProduct() {
@@ -17,6 +18,7 @@ const ProductDetail = () => {
       const response = await axiosInstance().get(`/products/${id}`);
       const productData: TProduct = response.data.product;
       setProduct(productData);
+      setTimestamp(Date.now());
     } catch (error) {
       console.error(error);
     }
@@ -34,12 +36,12 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className="max-w-5xl w-full bg-white shadow-xl rounded-lg overflow-hidden">
+    <div className="max-w-7xl w-full bg-white shadow-xl rounded-lg overflow-hidden">
       <div className="md:flex md:items-center p-2">
         <div className="md:w-1/2">
           <div className="relative w-full aspect-square">
             <Image
-              src={`http://localhost:8000/api/products/images/${product?.id}`}
+              src={`http://localhost:8000/api/products/images/${product?.id}?t=${timestamp}`}
               alt={product?.name || 'Product image'}
               fill
               className="object-contain"

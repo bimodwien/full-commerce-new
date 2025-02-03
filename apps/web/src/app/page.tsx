@@ -24,6 +24,7 @@ export default function Home() {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
+  const [timestamp, setTimestamp] = useState(Date.now());
   const [value] = useDebounce(search, 1000);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -33,6 +34,7 @@ export default function Home() {
         const response: ApiResponse = await fetchProduct(page, limit, value);
         setProducts(response.products.data);
         setTotalPages(response.products.totalPages);
+        setTimestamp(Date.now());
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -57,7 +59,7 @@ export default function Home() {
           <h2 className="text-2xl font-semibold">Product List</h2>
           <SearchBar onSearch={handleSearch} />
         </div>
-        <ProductGrid products={products} />
+        <ProductGrid products={products} timestamp={timestamp} />
         <div className="mt-8">
           <Pagination
             currentPage={page}
