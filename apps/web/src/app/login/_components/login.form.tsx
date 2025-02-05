@@ -12,11 +12,12 @@ import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
 import { AtSign, Lock, ArrowRight } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
   const { toast } = useToast();
+
   const dispatch = useAppDispatch();
   const initialValues = {
     username: '',
@@ -35,9 +36,13 @@ const LoginForm = () => {
           userLogin({ username: values.username, password: values.password }),
         );
         toast({
-          description: 'Login success',
+          title: 'Login Success',
+          description: `Welcome to TokoPaBimo, ${values.username}!`,
+          variant: 'default',
         });
-        window.location.href = '/';
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 10);
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';
         if (error instanceof AxiosError) {
