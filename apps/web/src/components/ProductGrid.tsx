@@ -14,6 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart } from 'lucide-react';
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import {
+  addWishlist,
+  removeWishlist,
+} from '@/lib/redux/middleware/wishlist.middleware';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductGridProps {
   products: TProduct[];
@@ -21,18 +27,63 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
-  const [favorites, setFavorites] = useState<{ [key: string]: boolean }>({});
+  const { toast } = useToast();
+  const dispatch = useAppDispatch();
+  const wishlist = useAppSelector((state) => state.wishlist);
+  const [localFavorites, setLocalFavorites] = useState<{
+    [key: string]: boolean;
+  }>({});
 
-  const toggleFavorite = (productId: string) => {
-    setFavorites((prev) => ({ ...prev, [productId]: !prev[productId] }));
+  const isFavorited = (productId: string): boolean => {
+    if (localFavorites[productId] !== undefined) {
+      return localFavorites[productId];
+    }
+    return wishlist.some(
+      (item) => item.Product && item.Product.id === productId,
+    );
+  };
+
+  const handleToggleFavorite = (product: TProduct) => {
+    const favorited = isFavorited(product.id);
+    const newFavorited = !favorited;
+
+    setLocalFavorites((prev) => ({
+      ...prev,
+      [product.id]: newFavorited,
+    }));
+    if (newFavorited) {
+      dispatch(addWishlist(product.id));
+      toast({
+        title: 'Product Added',
+        description: 'Product added to favorites',
+        duration: 2000,
+      });
+    } else {
+      const wishlistItem = wishlist.find(
+        (item) =>
+          item.productId === product.id ||
+          (item.Product && item.Product.id === product.id),
+      );
+      if (wishlistItem) {
+        dispatch(removeWishlist(wishlistItem.id));
+        toast({
+          title: 'Product Removed',
+          description: 'Product removed from favorites',
+          duration: 2000,
+        });
+      } else {
+        console.log('No wishlist item found for removal.');
+      }
+    }
   };
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => {
+        const favorited = isFavorited(product.id);
         return (
           <Link href={`/details/${product.id}`} key={product.id}>
-            <Card className="flex flex-col group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+            <Card className="flex flex-col h-full group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
               <CardHeader className="relative p-0 overflow-hidden">
                 <Image
                   src={`http://localhost:8000/api/products/images/${product.id}?timestamp=${timestamp}`}
@@ -45,20 +96,21 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
                   variant="ghost"
                   size="icon"
                   className={`absolute top-2 right-2 text-primary-foreground hover:text-primary ${
-                    favorites[product.id]
-                      ? 'bg-white text-gray-500 hover:text-gray-700'
+                    favorited
+                      ? 'bg-red-100 text-red-600 hover:text-red-500'
                       : 'bg-primary/50 hover:bg-primary-foreground/90'
                   }`}
                   aria-label={
-                    favorites[product.id]
-                      ? 'Remove from favorites'
-                      : 'Add to favorites'
+                    favorited ? 'Remove from favorites' : 'Add to favorites'
                   }
-                  onClick={() => toggleFavorite(product.id)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleToggleFavorite(product);
+                  }}
                 >
                   <Heart
                     className="h-5 w-5"
-                    fill={favorites[product.id] ? 'currentColor' : 'none'}
+                    fill={favorited ? 'currentColor' : 'none'}
                   />
                 </Button>
               </CardHeader>

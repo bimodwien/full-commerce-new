@@ -47,7 +47,7 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  if (pathname.startsWith('/cart') || pathname.startsWith('/favorites')) {
+  if (pathname.startsWith('/cart') || pathname.startsWith('/wishlist')) {
     if (!token) {
       url.pathname = '/login';
       return NextResponse.redirect(url);
@@ -68,5 +68,5 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/', '/dashboard/:path*', '/cart/:path*', '/favorites/:path*'],
+  matcher: ['/', '/dashboard/:path*', '/cart/:path*', '/wishlist/:path*'],
 };

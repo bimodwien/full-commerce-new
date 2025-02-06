@@ -26,12 +26,7 @@ export class WishlistRouter {
       verifyUser,
       this.wishlistController.create,
     );
-    this.router.delete(
-      '/',
-      validateToken,
-      verifyUser,
-      this.wishlistController.clearWishlist,
-    );
+
     this.router.get(
       '/:id',
       validateToken,

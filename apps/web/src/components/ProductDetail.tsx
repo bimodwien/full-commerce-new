@@ -7,11 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Heart } from 'lucide-react';
 import Image from 'next/image';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import {
+  addWishlist,
+  removeWishlist,
+} from '@/lib/redux/middleware/wishlist.middleware';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductDetail = () => {
+  const { toast } = useToast();
+  const dispatch = useAppDispatch();
+  const wishlist = useAppSelector((state) => state.wishlist);
   const [product, setProduct] = useState<TProduct | null>(null);
   const [timestamp, setTimestamp] = useState(Date.now());
   const { id } = useParams();
+  const [localFavorites, setLocalFavorites] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function fetchDetailProduct() {
@@ -27,11 +37,49 @@ const ProductDetail = () => {
     fetchDetailProduct();
   }, [id]);
 
-  const [isFavorite, setIsFavorite] = useState(false);
+  const isFavorited = (): boolean => {
+    if (localFavorites !== null) {
+      return localFavorites;
+    }
+    return wishlist.some((item) => item.Product && item.Product.id === id);
+  };
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    // Here you would typically update the favorite status in your backend or local storage
+    if (!product) return;
+
+    const currentFavorite = isFavorited();
+    const newFavorited = !currentFavorite;
+
+    setLocalFavorites(newFavorited);
+
+    if (newFavorited) {
+      dispatch(addWishlist(product.id));
+      toast({
+        title: 'Product Added',
+        description: 'Product added to favorites',
+        duration: 2000,
+      });
+    } else {
+      const wishlistItem = wishlist.find(
+        (item) =>
+          item.productId === product.id ||
+          (item.Product && item.Product.id === product.id),
+      );
+      if (wishlistItem) {
+        dispatch(removeWishlist(wishlistItem.id));
+        toast({
+          title: 'Product Removed',
+          description: 'Product removed from favorites',
+          duration: 2000,
+        });
+      } else {
+        toast({
+          title: 'Product Not Found',
+          description: 'Product not found in favorites',
+          duration: 2000,
+        });
+      }
+    }
   };
 
   return (
@@ -66,14 +114,14 @@ const ProductDetail = () => {
             <Button
               variant="outline"
               className={`flex items-center justify-center text-lg py-4 ${
-                isFavorite ? 'bg-red-100 text-red-600 border-red-600' : ''
+                isFavorited() ? 'bg-red-100 text-red-600 border-red-600' : ''
               }`}
               onClick={toggleFavorite}
             >
               <Heart
-                className={`h-6 w-6 mr-2 ${isFavorite ? 'fill-current' : ''}`}
+                className={`h-6 w-6 mr-2 ${isFavorited() ? 'fill-current' : ''}`}
               />
-              {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+              {isFavorited() ? 'Remove from Favorites' : 'Add to Favorites'}
             </Button>
           </div>
         </div>

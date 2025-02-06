@@ -10,7 +10,21 @@ class WishlistService {
     const wishlistData = await prisma.wishlist.findMany({
       where: { userId: String(userId) },
       include: {
-        Product: true,
+        Product: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            stock: true,
+            description: true,
+            Category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         User: {
           select: {
             id: true,
@@ -31,7 +45,21 @@ class WishlistService {
     const wishlistItem = await prisma.wishlist.findUnique({
       where: { id: String(id), userId: String(userId) },
       include: {
-        Product: true,
+        Product: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            stock: true,
+            description: true,
+            Category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!wishlistItem) {

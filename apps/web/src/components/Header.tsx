@@ -10,6 +10,7 @@ import { useAppSelector } from '@/lib/redux/hooks';
 
 export function Header() {
   const user = useAppSelector((state) => state.auth);
+  const wishlist = useAppSelector((state) => state.wishlist);
   const isLoggedIn = Boolean(user.id);
 
   return (
@@ -19,22 +20,31 @@ export function Header() {
           <span className="text-2xl font-bold">TokoPaBimo</span>
         </Link>
         <div className="flex items-center space-x-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Wishlist"
-            className="text-white hover:text-black hover:bg-white"
-          >
-            <Heart className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Cart"
-            className="text-white hover:text-black hover:bg-white"
-          >
-            <ShoppingCart className="h-5 w-5" />
-          </Button>
+          <Link href={`/wishlist`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Wishlist"
+              className="text-white hover:text-black hover:bg-white relative"
+            >
+              <Heart className="h-5 w-5" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </Button>
+          </Link>
+          <Link href={`/cart`}>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Cart"
+              className="text-white hover:text-black hover:bg-white"
+            >
+              <ShoppingCart className="h-5 w-5" />
+            </Button>
+          </Link>
           {isLoggedIn ? (
             <>
               <span className="hidden md:inline-block text-sm pl-2">
