@@ -71,7 +71,7 @@ const CartItem = ({ item }: CartItemsProp) => {
             />
             <div>
               <h2 className="text-lg font-semibold">{item.Product.name}</h2>
-              <p className="text-gray-600">${item.Product.price.toFixed(2)}</p>
+              <p className="text-gray-600">IDR. {item.Product.price}</p>
               <p className="text-sm text-gray-500">
                 Stock: {item.Product.stock}
               </p>

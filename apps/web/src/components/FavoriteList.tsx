@@ -16,6 +16,8 @@ import { Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import { TProduct } from '@/models/product.model';
+import { addToCart } from '@/lib/redux/middleware/cart.middleware';
 
 interface FavoriteListProps {
   favorite: TWishlist[];
@@ -33,8 +35,15 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
     });
   };
 
-  const handleAddToCart = (product: TWishlist) => {
-    // Add the product to the cart
+  const handleAddToCart = (product: TProduct) => {
+    if (product !== null) {
+      dispatch(addToCart(product.id));
+      toast({
+        title: 'Product Added',
+        description: 'Product added to cart',
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -76,7 +85,7 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
               </div>
             </CardContent>
             <CardFooter className="p-4 flex justify-between">
-              <Button onClick={() => handleAddToCart(product)}>
+              <Button onClick={() => handleAddToCart(product.Product!)}>
                 Add to Cart
               </Button>
               <Button

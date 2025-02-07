@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { keepLogin } from '@/lib/redux/middleware/auth.middleware';
 import { fetchCart } from '@/lib/redux/middleware/cart.middleware';
