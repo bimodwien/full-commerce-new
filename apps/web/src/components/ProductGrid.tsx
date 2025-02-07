@@ -20,6 +20,8 @@ import {
   removeWishlist,
 } from '@/lib/redux/middleware/wishlist.middleware';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { addToCart } from '@/lib/redux/middleware/cart.middleware';
 
 interface ProductGridProps {
   products: TProduct[];
@@ -28,8 +30,10 @@ interface ProductGridProps {
 
 const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
   const { toast } = useToast();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector((state) => state.wishlist);
+  const user = useAppSelector((state) => state.auth);
   const [localFavorites, setLocalFavorites] = useState<{
     [key: string]: boolean;
   }>({});
@@ -44,6 +48,16 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
   };
 
   const handleToggleFavorite = (product: TProduct) => {
+    if (!user.id) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to add to favorites',
+        duration: 2000,
+      });
+      router.push('/login');
+      return;
+    }
+
     const favorited = isFavorited(product.id);
     const newFavorited = !favorited;
 
@@ -77,8 +91,26 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
     }
   };
 
+  const handleAddToCart = (product: TProduct) => {
+    if (!user.id) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to add to cart',
+        duration: 2000,
+      });
+      router.push('/login');
+      return;
+    }
+    dispatch(addToCart(product.id));
+    toast({
+      title: 'Product Added',
+      description: 'Product added to cart',
+      duration: 2000,
+    });
+  };
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {products.map((product) => {
         const favorited = isFavorited(product.id);
         return (
@@ -116,7 +148,9 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
               </CardHeader>
               <CardContent className="flex-grow p-4">
                 <div className="flex justify-between items-start mb-2">
-                  <CardTitle className="text-lg">{product.name}</CardTitle>
+                  <CardTitle className="text-lg line-clamp-1">
+                    {product.name}
+                  </CardTitle>
                   <Badge variant="secondary" className="line-clamp-1">
                     {product.Category.name}
                   </Badge>
@@ -132,7 +166,16 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
                 </div>
               </CardContent>
               <CardFooter className="p-4">
-                <Button className="w-full">Add to Cart</Button>
+                <Button
+                  className="w-full"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
+                >
+                  Add to Cart
+                </Button>
               </CardFooter>
             </Card>
           </Link>

@@ -23,7 +23,7 @@ export default function Home() {
   const [products, setProducts] = useState<TProduct[]>([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [limit, setLimit] = useState(10);
   const [timestamp, setTimestamp] = useState(Date.now());
   const [value] = useDebounce(search, 1000);
   const [totalPages, setTotalPages] = useState(1);
@@ -56,7 +56,7 @@ export default function Home() {
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <h2 className="text-2xl font-semibold">Product List</h2>
+          <h2 className="text-2xl font-semibold pb-5">Product List</h2>
           <SearchBar onSearch={handleSearch} />
         </div>
         <ProductGrid products={products} timestamp={timestamp} />

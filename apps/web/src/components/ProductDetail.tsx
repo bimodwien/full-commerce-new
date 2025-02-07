@@ -13,11 +13,15 @@ import {
   removeWishlist,
 } from '@/lib/redux/middleware/wishlist.middleware';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { addToCart } from '@/lib/redux/middleware/cart.middleware';
 
 const ProductDetail = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector((state) => state.wishlist);
+  const user = useAppSelector((state) => state.auth);
+  const router = useRouter();
   const [product, setProduct] = useState<TProduct | null>(null);
   const [timestamp, setTimestamp] = useState(Date.now());
   const { id } = useParams();
@@ -46,7 +50,15 @@ const ProductDetail = () => {
 
   const toggleFavorite = () => {
     if (!product) return;
-
+    if (!user.id) {
+      toast({
+        title: 'Login Required',
+        description: 'You must be logged in to add products to favorites',
+        duration: 2000,
+      });
+      router.push('/login');
+      return;
+    }
     const currentFavorite = isFavorited();
     const newFavorited = !currentFavorite;
 
@@ -82,6 +94,26 @@ const ProductDetail = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    if (!user.id) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to add to cart',
+        duration: 2000,
+      });
+      router.push('/login');
+      return;
+    }
+    if (product !== null) {
+      dispatch(addToCart(product.id));
+    }
+    toast({
+      title: 'Product Added',
+      description: 'Product added to cart',
+      duration: 2000,
+    });
+  };
+
   return (
     <div className="max-w-7xl w-full bg-white shadow-xl rounded-lg overflow-hidden">
       <div className="md:flex md:items-center p-2">
@@ -110,7 +142,12 @@ const ProductDetail = () => {
           <p className="text-lg text-gray-600 mb-6">{product?.description}</p>
           <p className="text-lg text-gray-500 mb-8">Stock: {product?.stock}</p>
           <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
-            <Button className="flex-grow text-lg py-4">Add to Cart</Button>
+            <Button
+              className="flex-grow text-lg py-4"
+              onClick={handleAddToCart}
+            >
+              Add to Cart
+            </Button>
             <Button
               variant="outline"
               className={`flex items-center justify-center text-lg py-4 ${

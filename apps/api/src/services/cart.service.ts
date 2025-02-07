@@ -10,7 +10,21 @@ class CartService {
     const cartData = await prisma.cart.findMany({
       where: { userId: String(userId) },
       include: {
-        Product: true,
+        Product: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            stock: true,
+            description: true,
+            Category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
         User: {
           select: {
             id: true,
@@ -31,7 +45,21 @@ class CartService {
     const cartItem = await prisma.cart.findUnique({
       where: { id: String(id), userId: String(userId) },
       include: {
-        Product: true,
+        Product: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            stock: true,
+            description: true,
+            Category: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     if (!cartItem) {
@@ -43,7 +71,8 @@ class CartService {
 
   static async create(req: Request) {
     const userId = req.user?.id as string;
-    const { productId, quantity } = req.body;
+    const { productId } = req.body;
+    const quantity = 1;
     if (!userId) throw new Error('User not found');
     const existingCartItem = await prisma.cart.findFirst({
       where: { userId: String(userId), productId: String(productId) },
@@ -54,6 +83,20 @@ class CartService {
         data: {
           quantity: existingCartItem.quantity + Number(quantity),
         },
+        include: {
+          Product: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              stock: true,
+              description: true,
+              Category: {
+                select: { id: true, name: true },
+              },
+            },
+          },
+        },
       });
       return updated;
     } else {
@@ -62,6 +105,20 @@ class CartService {
           userId: String(userId),
           productId: String(productId),
           quantity: Number(quantity),
+        },
+        include: {
+          Product: {
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              stock: true,
+              description: true,
+              Category: {
+                select: { id: true, name: true },
+              },
+            },
+          },
         },
       });
       return created;
