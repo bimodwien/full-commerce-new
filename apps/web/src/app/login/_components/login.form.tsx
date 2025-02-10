@@ -79,7 +79,7 @@ const LoginForm = () => {
             <p className="text-white text-sm opacity-80">TokoPaBimo, 2025</p>
           </div>
         </div>
-        <div className="md:w-1/2 bg-white p-8 flex flex-col justify-center">
+        <div className="md:w-1/2 bg-white p-8 flex flex-col justify-center min-h-screen">
           <div className="max-w-md w-full mx-auto space-y-8">
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900">
