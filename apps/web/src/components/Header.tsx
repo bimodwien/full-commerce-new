@@ -44,9 +44,9 @@ export function Header() {
     <header className="sticky top-0 z-10 w-full bg-[#1a1a1a] text-white border-b border-[#2a2a2a]">
       <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-2xl font-bold">TokoPaBimo</span>
+          <span className="text-xl sm:text-2xl font-bold">TokoPaBimo</span>
         </Link>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 sm:space-x-4">
           <Link href={`/wishlist`}>
             <Button
               variant="ghost"

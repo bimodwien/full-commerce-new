@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { fetchFavorite } from '@/lib/redux/middleware/wishlist.middleware';
 import { Header } from '@/components/Header';
 import FavoriteList from '@/components/FavoriteList';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const Wishlist = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +23,12 @@ const Wishlist = () => {
         {favorite.length > 0 ? (
           <FavoriteList favorite={favorite} />
         ) : (
-          <p>Your wishlist is empty</p>
+          <div className="flex flex-col gap-5">
+            <p className="font-semibold text-xl">Your wishlist is empty</p>
+            <Link href="/">
+              <Button>Continue Shopping</Button>
+            </Link>
+          </div>
         )}
       </main>
     </div>

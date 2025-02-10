@@ -14,6 +14,23 @@ export function middleware(request: NextRequest) {
     return response;
   };
 
+  if (pathname === '/login') {
+    if (token) {
+      try {
+        const decode = jwtDecode<{ user?: { role?: string } }>(token);
+        if (decode.user?.role === 'admin') {
+          url.pathname = '/dashboard';
+          return NextResponse.redirect(url);
+        }
+        url.pathname = '/';
+        return NextResponse.redirect(url);
+      } catch (error) {
+        return NextResponse.next();
+      }
+    }
+    return NextResponse.next();
+  }
+
   if (pathname === '/') {
     if (token) {
       try {
@@ -68,5 +85,11 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/', '/dashboard/:path*', '/cart/:path*', '/wishlist/:path*'],
+  matcher: [
+    '/login',
+    '/',
+    '/dashboard/:path*',
+    '/cart/:path*',
+    '/wishlist/:path*',
+  ],
 };

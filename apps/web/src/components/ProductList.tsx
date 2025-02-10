@@ -150,7 +150,9 @@ export function ProductList() {
                   <TableCell className="hidden md:table-cell">
                     {product.description}
                   </TableCell>
-                  <TableCell>{product.Category.name}</TableCell>
+                  <TableCell>
+                    {product.Category?.name ? product.Category.name : '-'}
+                  </TableCell>
                   <TableCell>{product.price}</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {product.stock}

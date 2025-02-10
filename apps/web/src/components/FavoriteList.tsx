@@ -47,7 +47,7 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
   };
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
       {favorite
         .filter((item) => item.Product !== undefined)
         .map((product) => (
@@ -65,14 +65,14 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
             </Link>
             <CardContent className="flex-grow p-4">
               <div className="flex justify-between items-start mb-2">
-                <CardTitle className="text-lg">
+                <CardTitle className="text-lg line-clamp-1">
                   {product.Product?.name}
                 </CardTitle>
-                <Badge variant="secondary">
-                  {product.Product?.Category.name}
+                <Badge variant="secondary" className="line-clamp-1">
+                  {product.Product?.Category?.name || 'Unknown'}
                 </Badge>
               </div>
-              <p className="text-muted-foreground text-sm mb-2">
+              <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
                 {product.Product?.description}
               </p>
               <div className="flex justify-between items-center">

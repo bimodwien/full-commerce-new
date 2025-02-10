@@ -100,14 +100,17 @@ const EditProduct = () => {
           description: productData.description,
           price: productData.price,
           stock: productData.stock,
-          categoryId: productData.Category.id,
+          categoryId: productData.Category?.id || '',
         });
         setCategories(categoryResponse.category.data);
         setImagePreview(
-          `http://localhost:8000/api/products/images/${productData.id}`,
+          `http://localhost:8000/api/products/images/${productData.id}?timestamp=${Date.now()}`,
         );
 
-        formikRef.current?.setFieldValue('categoryId', productData.Category.id);
+        formikRef.current?.setFieldValue(
+          'categoryId',
+          productData.Category?.id,
+        );
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);

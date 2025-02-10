@@ -133,7 +133,7 @@ const ProductDetail = () => {
               {product?.name}
             </h1>
             <Badge variant="secondary" className="text-lg py-1 px-3">
-              {product?.Category?.name}
+              {product?.Category?.name || 'Unknown'}
             </Badge>
           </div>
           <p className="text-2xl font-bold text-gray-900 mb-6">

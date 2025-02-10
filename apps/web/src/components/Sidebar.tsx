@@ -32,7 +32,9 @@ export function Sidebar() {
   return (
     <ShadcnSidebar className="w-64 h-screen flex flex-col">
       <SidebarHeader>
-        <h2 className="text-xl font-bold p-4">TokoPaBimo Dashboard</h2>
+        <Link href={'/dashboard'}>
+          <h2 className="text-xl font-bold p-4">TokoPaBimo Dashboard</h2>
+        </Link>
       </SidebarHeader>
       <SidebarContent className="flex-grow">
         <SidebarGroup>

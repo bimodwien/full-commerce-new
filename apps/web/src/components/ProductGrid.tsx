@@ -152,7 +152,7 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
                     {product.name}
                   </CardTitle>
                   <Badge variant="secondary" className="line-clamp-1">
-                    {product.Category.name}
+                    {product.Category?.name || 'Unknown'}
                   </Badge>
                 </div>
                 <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
