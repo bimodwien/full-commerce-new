@@ -7,6 +7,7 @@ import CartItem from '@/components/CartItem';
 import CartSummary from '@/components/CartSummary';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/Footer';
 
 function Cart() {
   const dispatch = useAppDispatch();
@@ -46,6 +47,7 @@ function Cart() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

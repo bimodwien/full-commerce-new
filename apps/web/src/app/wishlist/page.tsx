@@ -6,6 +6,7 @@ import { Header } from '@/components/Header';
 import FavoriteList from '@/components/FavoriteList';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Footer } from '@/components/Footer';
 
 const Wishlist = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ const Wishlist = () => {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { useDebounce } from 'use-debounce';
 import { Pagination } from '@/components/Pagination';
 import { SearchBar } from '@/components/SearchBar';
 import ProductGrid from '@/components/ProductGrid';
+import { Footer } from '@/components/Footer';
 
 interface ApiResponse {
   products: {
@@ -68,6 +69,7 @@ export default function Home() {
           />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { TProduct } from '@/models/product.model';
 import {
@@ -34,16 +34,12 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
   const dispatch = useAppDispatch();
   const wishlist = useAppSelector((state) => state.wishlist);
   const user = useAppSelector((state) => state.auth);
-  const [localFavorites, setLocalFavorites] = useState<{
-    [key: string]: boolean;
-  }>({});
 
   const isFavorited = (productId: string): boolean => {
-    if (localFavorites[productId] !== undefined) {
-      return localFavorites[productId];
-    }
     return wishlist.some(
-      (item) => item.Product && item.Product.id === productId,
+      (item) =>
+        item.productId === productId ||
+        (item.Product && item.Product.id === productId),
     );
   };
 
@@ -59,13 +55,7 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
     }
 
     const favorited = isFavorited(product.id);
-    const newFavorited = !favorited;
-
-    setLocalFavorites((prev) => ({
-      ...prev,
-      [product.id]: newFavorited,
-    }));
-    if (newFavorited) {
+    if (!favorited) {
       dispatch(addWishlist(product.id));
       toast({
         title: 'Product Added',
@@ -85,8 +75,6 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
           description: 'Product removed from favorites',
           duration: 2000,
         });
-      } else {
-        console.log('No wishlist item found for removal.');
       }
     }
   };

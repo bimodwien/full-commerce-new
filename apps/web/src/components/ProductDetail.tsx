@@ -25,7 +25,6 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<TProduct | null>(null);
   const [timestamp, setTimestamp] = useState(Date.now());
   const { id } = useParams();
-  const [localFavorites, setLocalFavorites] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function fetchDetailProduct() {
@@ -41,13 +40,13 @@ const ProductDetail = () => {
     fetchDetailProduct();
   }, [id]);
 
-  const isFavorited = (): boolean => {
-    if (localFavorites !== null) {
-      return localFavorites;
-    }
-    return wishlist.some((item) => item.Product && item.Product.id === id);
+  const isFavorited = (productId: string): boolean => {
+    return wishlist.some(
+      (item) =>
+        item.productId === productId ||
+        (item.Product && item.Product.id === productId),
+    );
   };
-
   const toggleFavorite = () => {
     if (!product) return;
     if (!user.id) {
@@ -59,12 +58,9 @@ const ProductDetail = () => {
       router.push('/login');
       return;
     }
-    const currentFavorite = isFavorited();
-    const newFavorited = !currentFavorite;
 
-    setLocalFavorites(newFavorited);
-
-    if (newFavorited) {
+    const favorited = isFavorited(product.id);
+    if (!favorited) {
       dispatch(addWishlist(product.id));
       toast({
         title: 'Product Added',
@@ -84,15 +80,11 @@ const ProductDetail = () => {
           description: 'Product removed from favorites',
           duration: 2000,
         });
-      } else {
-        toast({
-          title: 'Product Not Found',
-          description: 'Product not found in favorites',
-          duration: 2000,
-        });
       }
     }
   };
+
+  useEffect(() => {}, [wishlist]);
 
   const handleAddToCart = () => {
     if (!user.id) {
@@ -151,14 +143,18 @@ const ProductDetail = () => {
             <Button
               variant="outline"
               className={`flex items-center justify-center text-lg py-4 ${
-                isFavorited() ? 'bg-red-100 text-red-600 border-red-600' : ''
+                isFavorited(product?.id || '')
+                  ? 'bg-red-100 text-red-600 border-red-600'
+                  : ''
               }`}
               onClick={toggleFavorite}
             >
               <Heart
-                className={`h-6 w-6 mr-2 ${isFavorited() ? 'fill-current' : ''}`}
+                className={`h-6 w-6 mr-2 ${isFavorited(product?.id || '') ? 'fill-current' : ''}`}
               />
-              {isFavorited() ? 'Remove from Favorites' : 'Add to Favorites'}
+              {isFavorited(product?.id || '')
+                ? 'Remove from Favorites'
+                : 'Add to Favorites'}
             </Button>
           </div>
         </div>
