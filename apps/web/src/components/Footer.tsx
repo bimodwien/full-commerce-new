@@ -76,7 +76,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t border-[#2a2a2a] pt-3 text-center">
           <p className="text-gray-300">
-            &copy; 2025 My Store. All rights reserved.
+            &copy; 2025 TokoPaBimo. All rights reserved.
           </p>
         </div>
       </div>
