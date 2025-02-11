@@ -27,7 +27,7 @@ function Cart() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 min-h-screen">
         <h1 className="text-2xl font-semibold mb-8">Cart</h1>
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">

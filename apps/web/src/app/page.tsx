@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 min-h-screen">
         <div className="mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h2 className="text-2xl font-semibold pb-5">Product List</h2>
           <SearchBar onSearch={handleSearch} />

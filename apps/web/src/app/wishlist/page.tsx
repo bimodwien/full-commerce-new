@@ -19,7 +19,7 @@ const Wishlist = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 min-h-screen">
         <h1 className="text-2xl font-semibold mb-8">Your Wishlist</h1>
         {favorite.length > 0 ? (
           <FavoriteList favorite={favorite} />
