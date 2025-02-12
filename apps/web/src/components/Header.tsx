@@ -84,7 +84,8 @@ export function Header() {
               <span className="hidden md:inline-block text-sm pl-2">
                 Hi, {user.name}
               </span>
-              <Logout />
+              <Logout className="hidden sm:flex" />
+              <Logout compact showText={false} className="flex sm:hidden" />
             </>
           ) : (
             <Link href="/login">
