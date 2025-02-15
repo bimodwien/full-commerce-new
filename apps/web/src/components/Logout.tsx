@@ -33,7 +33,7 @@ const Logout = ({
   return (
     <Button
       variant="ghost"
-      className={`text-white bg-[#1a1a1a] hover:text-black hover:bg-white border text-base border-white ${className}`}
+      className={`text-white bg-[#1a1a1a] hover:text-black hover:bg-white sm:border text-base border-white  ${className}`}
       onClick={loggingout}
     >
       <LogOut className="h-2 w-2" />

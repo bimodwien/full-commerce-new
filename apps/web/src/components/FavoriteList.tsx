@@ -26,7 +26,11 @@ interface FavoriteListProps {
 const FavoriteList = ({ favorite }: FavoriteListProps) => {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-  const handleDeleteWishlist = (wishlistItemId: string) => {
+  const handleDeleteWishlist = (
+    wishlistItemId: string,
+    e: React.MouseEvent,
+  ) => {
+    e.preventDefault();
     dispatch(removeWishlist(wishlistItemId));
     toast({
       title: 'Product Removed',
@@ -35,7 +39,8 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
     });
   };
 
-  const handleAddToCart = (product: TProduct) => {
+  const handleAddToCart = (product: TProduct, e: React.MouseEvent) => {
+    e.preventDefault();
     if (product !== null) {
       dispatch(addToCart(product.id));
       toast({
@@ -51,52 +56,52 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
       {favorite
         .filter((item) => item.Product !== undefined)
         .map((product) => (
-          <Card key={product.id} className="flex flex-col">
-            <Link href={`/details/${product.Product?.id}`}>
-              <CardHeader className="relative p-0">
+          <Link key={product.id} href={`/details/${product.Product?.id}`}>
+            <Card className="flex flex-col group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
+              <CardHeader className="relative p-0 overflow-hidden">
                 <Image
                   src={`http://localhost:8000/api/products/images/${product.Product?.id}?timestamp=${Date.now()}`}
                   alt={product.Product?.name || 'Product Image'}
                   width={400}
                   height={400}
-                  className="object-cover w-full h-48 rounded-t-lg"
+                  className="object-cover w-full h-48 rounded-t-lg transition-transform duration-300 group-hover:scale-105"
                 />
               </CardHeader>
-            </Link>
-            <CardContent className="flex-grow p-4">
-              <div className="flex justify-between items-start mb-2">
-                <CardTitle className="text-lg line-clamp-1">
-                  {product.Product?.name}
-                </CardTitle>
-                <Badge variant="secondary" className="line-clamp-1">
-                  {product.Product?.Category?.name || 'Unknown'}
-                </Badge>
-              </div>
-              <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
-                {product.Product?.description}
-              </p>
-              <div className="flex justify-between items-center">
-                <p className="text-lg font-semibold">
-                  IDR. {product.Product?.price}
+              <CardContent className="flex-grow p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <CardTitle className="text-lg line-clamp-1">
+                    {product.Product?.name}
+                  </CardTitle>
+                  <Badge variant="secondary" className="line-clamp-1">
+                    {product.Product?.Category?.name || 'Unknown'}
+                  </Badge>
+                </div>
+                <p className="text-muted-foreground text-sm mb-2 line-clamp-2">
+                  {product.Product?.description}
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Stock: {product.Product?.stock}
-                </p>
-              </div>
-            </CardContent>
-            <CardFooter className="p-4 flex justify-between">
-              <Button onClick={() => handleAddToCart(product.Product!)}>
-                Add to Cart
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => handleDeleteWishlist(product.id)}
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Remove
-              </Button>
-            </CardFooter>
-          </Card>
+                <div className="flex justify-between items-center">
+                  <p className="text-lg font-semibold">
+                    IDR. {product.Product?.price}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Stock: {product.Product?.stock}
+                  </p>
+                </div>
+              </CardContent>
+              <CardFooter className="p-4 flex justify-between">
+                <Button onClick={(e) => handleAddToCart(product.Product!, e)}>
+                  Add to Cart
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={(e) => handleDeleteWishlist(product.id, e)}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Remove
+                </Button>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
     </div>
   );

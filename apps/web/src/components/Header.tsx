@@ -85,7 +85,11 @@ export function Header() {
                 Hi, {user.name}
               </span>
               <Logout className="hidden sm:flex" />
-              <Logout compact showText={false} className="flex sm:hidden" />
+              <Logout
+                compact
+                showText={false}
+                className="flex sm:hidden sm:border-none"
+              />
             </>
           ) : (
             <Link href="/login">
