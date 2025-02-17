@@ -4,8 +4,9 @@ import StoreProvider from '@/components/providers/store.providers';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo',
+  title: 'TokoPaBimo - Home',
   description: 'Tokopabimo with Next.js',
+  keywords: ['nextjs', 'ecommerce', 'tokopabimo'],
 };
 
 export default function RootLayout({
