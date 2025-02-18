@@ -147,7 +147,12 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
                   {product.description}
                 </p>
                 <div className="flex justify-between items-center">
-                  <p className="text-lg font-semibold">IDR. {product.price}</p>
+                  <p className="text-lg font-semibold">
+                    {new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                    }).format(product.price) || product.price}
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     Stock: {product.stock}
                   </p>

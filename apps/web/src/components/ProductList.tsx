@@ -153,7 +153,12 @@ export function ProductList() {
                   <TableCell>
                     {product.Category?.name ? product.Category.name : '-'}
                   </TableCell>
-                  <TableCell>{product.price}</TableCell>
+                  <TableCell>
+                    {new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                    }).format(product.price)}
+                  </TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {product.stock}
                   </TableCell>

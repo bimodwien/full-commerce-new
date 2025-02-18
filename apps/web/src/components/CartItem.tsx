@@ -78,7 +78,12 @@ const CartItem = ({ item }: CartItemsProp) => {
                   {item.Product.name}
                 </h2>
               </Link>
-              <p className="text-gray-600">IDR. {item.Product.price}</p>
+              <p className="text-gray-600">
+                {new Intl.NumberFormat('id-ID', {
+                  style: 'currency',
+                  currency: 'IDR',
+                }).format(item.Product.price || 0 || item.Product.price)}
+              </p>
               <p className="text-sm text-gray-500">
                 Stock: {item.Product.stock}
               </p>

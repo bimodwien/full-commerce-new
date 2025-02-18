@@ -77,14 +77,16 @@ const RegisterForm = () => {
         </div>
         <div className="md:w-1/2 bg-white p-8 flex flex-col justify-center min-h-screen">
           <div className="max-w-md w-full mx-auto space-y-8">
-            <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                TokoPaBimo
-              </h1>
-              <p className="text-sm text-gray-600">
-                Create your account to get started
-              </p>
-            </div>
+            <Link href={'/'}>
+              <div className="space-y-2 text-center">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                  TokoPaBimo
+                </h1>
+                <p className="text-sm text-gray-600">
+                  Create your account to get started
+                </p>
+              </div>
+            </Link>
             <Card className="border-none shadow-none">
               <CardContent className="px-0">
                 <form onSubmit={formik.handleSubmit} className="space-y-4">

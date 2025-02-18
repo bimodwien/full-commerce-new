@@ -81,7 +81,10 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
                 </p>
                 <div className="flex justify-between items-center">
                   <p className="text-lg font-semibold">
-                    IDR. {product.Product?.price}
+                    {new Intl.NumberFormat('id-ID', {
+                      style: 'currency',
+                      currency: 'IDR',
+                    }).format(product.Product?.price || 0)}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     Stock: {product.Product?.stock}

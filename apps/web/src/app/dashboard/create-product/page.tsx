@@ -193,6 +193,7 @@ function CreateProduct() {
                           accept="image/*"
                           onChange={() => handleImage()}
                           ref={imageRef}
+                          className="cursor-pointer"
                         />
                         {imagePreview && (
                           <div className="mt-2">
@@ -211,6 +212,7 @@ function CreateProduct() {
                 </CardContent>
                 <CardFooter className="flex justify-between">
                   <Button
+                    type="button"
                     variant="outline"
                     onClick={() => router.push('/dashboard')}
                   >

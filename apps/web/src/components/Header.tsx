@@ -81,8 +81,8 @@ export function Header() {
           </Link>
           {isLoggedIn ? (
             <>
-              <span className="hidden md:inline-block text-sm pl-2">
-                Hi, {user.name}
+              <span className="hidden md:inline-block text-sm pl-2 capitalize">
+                Hi, {user.name?.split(' ')[0]}
               </span>
               <Logout className="hidden sm:flex" />
               <Logout

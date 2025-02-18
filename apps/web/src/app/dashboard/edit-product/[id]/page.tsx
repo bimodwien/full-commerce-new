@@ -228,6 +228,7 @@ const EditProduct = () => {
                           accept="image/*"
                           ref={imageRef}
                           onChange={() => handleImage()}
+                          className="cursor-pointer"
                         />
                         {imagePreview && (
                           <div className="mt-2">

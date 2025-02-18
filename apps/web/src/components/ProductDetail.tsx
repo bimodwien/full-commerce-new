@@ -129,7 +129,10 @@ const ProductDetail = () => {
             </Badge>
           </div>
           <p className="text-2xl font-bold text-gray-900 mb-6">
-            IDR. {product?.price}
+            {new Intl.NumberFormat('id-ID', {
+              style: 'currency',
+              currency: 'IDR',
+            }).format(product?.price || 0) || product?.price}
           </p>
           <p className="text-lg text-gray-600 mb-6">{product?.description}</p>
           <p className="text-lg text-gray-500 mb-8">Stock: {product?.stock}</p>
