@@ -1,24 +1,21 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
-import { makeStore, AppStore } from '@/lib/redux/store';
+import { store, persistor } from '@/lib/redux/store';
 import AuthProvider from './auth.providers';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default function StoreProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const storeRef = useRef<AppStore | null>(null);
-
-  if (!storeRef.current) {
-    storeRef.current = makeStore();
-  }
-
   return (
-    <Provider store={storeRef.current}>
-      <AuthProvider>{children}</AuthProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <AuthProvider>{children}</AuthProvider>
+      </PersistGate>
     </Provider>
   );
 }

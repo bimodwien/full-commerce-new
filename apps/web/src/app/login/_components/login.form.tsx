@@ -31,6 +31,9 @@ const LoginForm = () => {
       password: Yup.string().required('Password is required'),
     }),
     onSubmit: async (values) => {
+      if (Object.keys(formik.errors).length > 0) {
+        return;
+      }
       try {
         await dispatch(
           userLogin({ username: values.username, password: values.password }),
@@ -93,7 +96,13 @@ const LoginForm = () => {
             </Link>
             <Card className="border-none shadow-none">
               <CardContent className="px-0">
-                <form onSubmit={formik.handleSubmit} className="space-y-4">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    formik.handleSubmit(e);
+                  }}
+                  className="space-y-4"
+                >
                   <div className="space-y-2">
                     <Label
                       htmlFor="username"

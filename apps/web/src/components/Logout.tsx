@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { resetCart } from '@/lib/redux/slices/cart.slice';
+import { resetWishlist } from '@/lib/redux/slices/wishlist.slice';
 
 const Logout = ({
   showText = true,
@@ -21,10 +23,12 @@ const Logout = ({
   const { toast } = useToast();
 
   function loggingout() {
+    dispatch(resetCart());
+    dispatch(resetWishlist());
     dispatch(logout());
     toast({
       title: 'Logout success!',
-      description: 'You have logging out successfully',
+      description: 'You have logged out successfully',
       duration: 2000,
     });
     router.push('/login');

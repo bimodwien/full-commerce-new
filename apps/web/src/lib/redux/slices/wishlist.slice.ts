@@ -22,13 +22,13 @@ export const wishlistSlice = createSlice({
       return state.filter((item) => item.id !== action.payload);
     },
     // untuk menghapus seluruh wishlist
-    clearFavorite: (state) => {
+    resetWishlist: (state) => {
       return [];
     },
   },
 });
 
-export const { setFavorite, addFavorite, deleteFavorite, clearFavorite } =
+export const { setFavorite, addFavorite, deleteFavorite, resetWishlist } =
   wishlistSlice.actions;
 
 export default wishlistSlice.reducer;

@@ -10,18 +10,23 @@ type Props = { children: React.ReactNode };
 
 const AuthProvider = ({ children }: Props) => {
   const dispatch = useAppDispatch();
-  const { role } = useAppSelector((state) => state.auth);
+  const authState = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(keepLogin());
   }, [dispatch]);
 
   useEffect(() => {
-    if (role === 'user') {
-      dispatch(fetchCart());
-      dispatch(fetchFavorite());
-    }
-  }, [dispatch, role]);
+    const fetchData = async () => {
+      await dispatch(keepLogin());
+      if (authState.role === 'user') {
+        dispatch(fetchCart());
+        dispatch(fetchFavorite());
+      }
+    };
+
+    fetchData();
+  }, [dispatch, authState.role]);
 
   return <>{children}</>;
 };

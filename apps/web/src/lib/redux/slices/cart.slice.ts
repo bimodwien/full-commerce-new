@@ -37,8 +37,8 @@ const cartSlice = createSlice({
       return state.filter((item) => item.id !== action.payload);
     },
 
-    clearCart: (state) => {
-      state = [];
+    resetCart: (state) => {
+      return [];
     },
   },
 });
@@ -48,7 +48,7 @@ export const {
   addOrUpdateCartItem,
   updateQuantity,
   removeCartItem,
-  clearCart,
+  resetCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
