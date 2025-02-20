@@ -3,7 +3,6 @@ import { jwtDecode } from 'jwt-decode';
 
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value;
-
   const url = request.nextUrl.clone();
   const { pathname } = url;
 
@@ -14,21 +13,18 @@ export function middleware(request: NextRequest) {
     return response;
   };
 
-  if (pathname === '/login') {
-    if (token) {
-      try {
-        const decode = jwtDecode<{ user?: { role?: string } }>(token);
-        if (decode.user?.role === 'admin') {
-          url.pathname = '/dashboard';
-          return NextResponse.redirect(url);
-        }
+  if (pathname === '/login' && token) {
+    try {
+      const decoded = jwtDecode<{ user?: { role?: string } }>(token);
+      if (decoded.user?.role === 'admin') {
+        url.pathname = '/dashboard';
+      } else {
         url.pathname = '/';
-        return NextResponse.redirect(url);
-      } catch (error) {
-        return NextResponse.next();
       }
+      return NextResponse.redirect(url);
+    } catch (error) {
+      return handleInvalidToken();
     }
-    return NextResponse.next();
   }
 
   if (pathname === '/') {
@@ -71,10 +67,11 @@ export function middleware(request: NextRequest) {
     }
     try {
       const decoded = jwtDecode<{ user?: { role?: string } }>(token);
+
       if (!decoded.user?.role) return handleInvalidToken();
 
-      if (decoded.user?.role === 'admin') {
-        url.pathname = '/dashboard';
+      if (decoded.user?.role !== 'user') {
+        url.pathname = '/login';
         return NextResponse.redirect(url);
       }
     } catch (err) {
@@ -84,6 +81,7 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
 export const config = {
   matcher: [
     '/login',

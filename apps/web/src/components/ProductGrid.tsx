@@ -47,7 +47,7 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
     if (!user.id) {
       toast({
         title: 'Login Required',
-        description: 'Please login to add to favorites',
+        description: 'Please login to add new favorite',
         duration: 2000,
       });
       router.push('/login');
@@ -83,7 +83,7 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
     if (!user.id) {
       toast({
         title: 'Login Required',
-        description: 'Please login to add to cart',
+        description: 'Please login to add new cart',
         duration: 2000,
       });
       router.push('/login');

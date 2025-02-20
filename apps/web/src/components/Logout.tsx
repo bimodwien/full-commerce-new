@@ -22,16 +22,21 @@ const Logout = ({
   const router = useRouter();
   const { toast } = useToast();
 
-  function loggingout() {
-    dispatch(resetCart());
+  async function loggingout() {
     dispatch(resetWishlist());
+    dispatch(resetCart());
+
+    await new Promise((resolve) => setTimeout(resolve, 150));
     dispatch(logout());
+
     toast({
       title: 'Logout success!',
       description: 'You have logged out successfully',
       duration: 2000,
     });
-    router.push('/login');
+
+    router.replace('/login');
+    window.location.reload();
   }
 
   return (

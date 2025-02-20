@@ -52,7 +52,7 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
   };
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {favorite
         .filter((item) => item.Product !== undefined)
         .map((product) => (
