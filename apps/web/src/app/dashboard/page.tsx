@@ -1,11 +1,19 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Sidebar } from '@/components/Sidebar';
 import { ProductList } from '@/components/ProductList';
 
 const Dashboard = () => {
+  useEffect(() => {
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        window.location.reload();
+      }
+    });
+  }, []);
+
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden lg:flex-row w-full">

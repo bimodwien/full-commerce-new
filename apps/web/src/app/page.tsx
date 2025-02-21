@@ -9,6 +9,9 @@ import { Pagination } from '@/components/Pagination';
 import { SearchBar } from '@/components/SearchBar';
 import ProductGrid from '@/components/ProductGrid';
 import { Footer } from '@/components/Footer';
+import { useRouter } from 'next/navigation';
+import { getCookie } from 'cookies-next';
+import { jwtDecode } from 'jwt-decode';
 
 interface ApiResponse {
   products: {
@@ -20,7 +23,29 @@ interface ApiResponse {
   };
 }
 
+type DecodedToken = {
+  user: {
+    role: string;
+  };
+};
+
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = getCookie('access_token');
+    if (token && typeof token === 'string') {
+      try {
+        const decoded = jwtDecode<DecodedToken>(token);
+        if (decoded.user?.role === 'admin') {
+          router.replace('/dashboard');
+        }
+      } catch (error) {
+        console.error('Gagal decode token: ', error);
+      }
+    }
+  }, [router]);
+
   const [products, setProducts] = useState<TProduct[]>([]);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);

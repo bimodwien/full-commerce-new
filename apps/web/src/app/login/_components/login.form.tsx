@@ -14,11 +14,12 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { AtSign, Lock, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
   const { toast } = useToast();
-
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const initialValues = {
     username: '',
     password: '',
@@ -43,9 +44,8 @@ const LoginForm = () => {
           description: `Welcome to TokoPaBimo, ${values.username}!`,
           variant: 'default',
         });
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 10);
+
+        router.replace('/');
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';
         if (error instanceof AxiosError) {

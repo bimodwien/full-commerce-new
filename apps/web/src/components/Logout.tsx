@@ -36,7 +36,6 @@ const Logout = ({
     });
 
     router.replace('/login');
-    window.location.reload();
   }
 
   return (

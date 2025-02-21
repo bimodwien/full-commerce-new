@@ -13,21 +13,39 @@ export function middleware(request: NextRequest) {
     return response;
   };
 
-  if (pathname === '/login' && token) {
-    try {
-      const decoded = jwtDecode<{ user?: { role?: string } }>(token);
-      if (decoded.user?.role === 'admin') {
-        url.pathname = '/dashboard';
-      } else {
-        url.pathname = '/';
+  const setNoCacheHeaders = (response: NextResponse) => {
+    response.headers.set(
+      'Cache-Control',
+      'no-cache, no-store, must-revalidate, proxy-revalidate',
+    );
+    return response;
+  };
+
+  if (pathname === '/login' || pathname === '/login/') {
+    const response = NextResponse.next();
+    setNoCacheHeaders(response);
+    if (token) {
+      try {
+        const decoded = jwtDecode<{ user?: { role?: string } }>(token);
+        const role = decoded.user?.role;
+        console.log('ini decoded role: ', role);
+        if (role === 'admin') {
+          return NextResponse.redirect(new URL('/dashboard', request.url));
+        }
+        if (role === 'user') {
+          return NextResponse.redirect(new URL('/', request.url));
+        }
+      } catch (error) {
+        console.error('Error decoding token: ', error);
+        return response;
       }
-      return NextResponse.redirect(url);
-    } catch (error) {
-      return handleInvalidToken();
     }
+    return response;
   }
 
-  if (pathname === '/') {
+  if (pathname === '/' || pathname === '/index') {
+    const response = NextResponse.next();
+    setNoCacheHeaders(response);
     if (token) {
       try {
         const decoded = jwtDecode<{ user?: { role?: string } }>(token);
@@ -41,10 +59,12 @@ export function middleware(request: NextRequest) {
         return response;
       }
     }
-    return NextResponse.next();
+    return response;
   }
 
   if (pathname.startsWith('/dashboard')) {
+    const response = NextResponse.next();
+    setNoCacheHeaders(response);
     if (!token) {
       url.pathname = '/login';
       return NextResponse.redirect(url);
@@ -58,18 +78,19 @@ export function middleware(request: NextRequest) {
     } catch (err) {
       return handleInvalidToken();
     }
+    return response;
   }
 
   if (pathname.startsWith('/cart') || pathname.startsWith('/wishlist')) {
+    const response = NextResponse.next();
+    setNoCacheHeaders(response);
     if (!token) {
       url.pathname = '/login';
       return NextResponse.redirect(url);
     }
     try {
       const decoded = jwtDecode<{ user?: { role?: string } }>(token);
-
       if (!decoded.user?.role) return handleInvalidToken();
-
       if (decoded.user?.role !== 'user') {
         url.pathname = '/login';
         return NextResponse.redirect(url);
@@ -77,6 +98,7 @@ export function middleware(request: NextRequest) {
     } catch (err) {
       return handleInvalidToken();
     }
+    return response;
   }
 
   return NextResponse.next();
