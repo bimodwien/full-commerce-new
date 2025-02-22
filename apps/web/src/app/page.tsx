@@ -39,6 +39,9 @@ export default function Home() {
         const decoded = jwtDecode<DecodedToken>(token);
         if (decoded.user?.role === 'admin') {
           router.replace('/dashboard');
+        } else if (sessionStorage.getItem('justLoggedIn') === 'true') {
+          sessionStorage.removeItem('justLoggedIn');
+          window.location.reload();
         }
       } catch (error) {
         console.error('Gagal decode token: ', error);

@@ -44,7 +44,8 @@ const LoginForm = () => {
           description: `Welcome to TokoPaBimo, ${values.username}!`,
           variant: 'default',
         });
-
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        sessionStorage.setItem('justLoggedIn', 'true');
         router.replace('/');
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';

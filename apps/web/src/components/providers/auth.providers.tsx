@@ -13,20 +13,21 @@ const AuthProvider = ({ children }: Props) => {
   const authState = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    dispatch(keepLogin());
+    const initAuth = async () => {
+      await dispatch(keepLogin());
+    };
+    initAuth();
   }, [dispatch]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(keepLogin());
-      if (authState.role === 'user') {
-        dispatch(fetchCart());
-        dispatch(fetchFavorite());
-      }
-    };
-
-    fetchData();
-  }, [dispatch, authState.role]);
+    if (authState.role === 'user') {
+      console.log(
+        `AuthProvider: Fetching user data. Role: ${authState.role}, ID: ${authState.id}`,
+      );
+      dispatch(fetchCart());
+      dispatch(fetchFavorite());
+    }
+  }, [dispatch, authState.role, authState.id]);
 
   return <>{children}</>;
 };

@@ -28,7 +28,6 @@ export function middleware(request: NextRequest) {
       try {
         const decoded = jwtDecode<{ user?: { role?: string } }>(token);
         const role = decoded.user?.role;
-        console.log('ini decoded role: ', role);
         if (role === 'admin') {
           return NextResponse.redirect(new URL('/dashboard', request.url));
         }
@@ -81,24 +80,21 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  if (pathname.startsWith('/cart') || pathname.startsWith('/wishlist')) {
-    const response = NextResponse.next();
-    setNoCacheHeaders(response);
+  if (
+    request.nextUrl.pathname.startsWith('/cart') ||
+    request.nextUrl.pathname.startsWith('/wishlist')
+  ) {
     if (!token) {
-      url.pathname = '/login';
-      return NextResponse.redirect(url);
+      return NextResponse.redirect(new URL('/login', request.url));
     }
     try {
-      const decoded = jwtDecode<{ user?: { role?: string } }>(token);
-      if (!decoded.user?.role) return handleInvalidToken();
-      if (decoded.user?.role !== 'user') {
-        url.pathname = '/login';
-        return NextResponse.redirect(url);
+      const decoded = jwtDecode<{ user: { role: string } }>(token);
+      if (decoded.user.role !== 'user') {
+        return NextResponse.redirect(new URL('/', request.url));
       }
-    } catch (err) {
-      return handleInvalidToken();
+    } catch (error) {
+      return NextResponse.redirect(new URL('/login', request.url));
     }
-    return response;
   }
 
   return NextResponse.next();

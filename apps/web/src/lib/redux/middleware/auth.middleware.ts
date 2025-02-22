@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 export const userLogin = ({ username, password }: TUser) => {
   return async (dispatch: Dispatch) => {
     try {
-      await axiosInstance().post(
+      const response = await axiosInstance().post(
         '/users/login',
         { username, password },
         { withCredentials: true },
@@ -16,6 +16,7 @@ export const userLogin = ({ username, password }: TUser) => {
       const access_token = getCookie('access_token') || '';
       if (typeof access_token === 'string') {
         const decoded = jwtDecode<{ user: TUser }>(access_token);
+
         if (!decoded.user) {
           return;
         }
@@ -25,6 +26,7 @@ export const userLogin = ({ username, password }: TUser) => {
         throw new Error('User not found');
       }
     } catch (error) {
+      console.error(`userLogin: Error during login: ${error}`);
       deleteCookie('access_token');
       deleteCookie('refresh_token');
       throw error;
@@ -35,12 +37,14 @@ export const userLogin = ({ username, password }: TUser) => {
 export const keepLogin = () => async (dispatch: Dispatch) => {
   try {
     const token = getCookie('access_token') || '';
+
     if (typeof token === 'string' && token) {
       const decode = jwtDecode<{ user: TUser }>(token);
+
       dispatch(login(decode?.user));
     }
   } catch (error) {
-    console.log(error);
+    console.error('keepLogin: Error', error);
     deleteCookie('access_token');
   }
 };
