@@ -2,12 +2,12 @@
 import React from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { logout } from '@/lib/redux/slices/user.slice';
-import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { resetCart } from '@/lib/redux/slices/cart.slice';
 import { resetWishlist } from '@/lib/redux/slices/wishlist.slice';
+import { useRouter } from 'next/navigation';
 
 const Logout = ({
   showText = true,
@@ -19,8 +19,9 @@ const Logout = ({
   className?: string;
 }) => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const { toast } = useToast();
+  const router = useRouter();
+  const timeout = 1000;
 
   async function loggingout() {
     dispatch(resetWishlist());
@@ -32,10 +33,12 @@ const Logout = ({
     toast({
       title: 'Logout success!',
       description: 'You have logged out successfully',
-      duration: 2000,
+      duration: 800,
     });
 
-    router.replace('/login');
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, timeout);
   }
 
   return (

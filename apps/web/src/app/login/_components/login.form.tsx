@@ -20,6 +20,7 @@ const LoginForm = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const timeout = 1000;
   const initialValues = {
     username: '',
     password: '',
@@ -43,10 +44,13 @@ const LoginForm = () => {
           title: 'Login Success',
           description: `Welcome to TokoPaBimo, ${values.username}!`,
           variant: 'default',
+          duration: 800,
         });
         await new Promise((resolve) => setTimeout(resolve, 100));
         sessionStorage.setItem('justLoggedIn', 'true');
-        router.replace('/');
+        setTimeout(() => {
+          router.replace('/');
+        }, timeout);
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';
         if (error instanceof AxiosError) {

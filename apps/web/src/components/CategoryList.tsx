@@ -91,6 +91,7 @@ const CategoryList = () => {
       setTotalPages(response.category.totalPages);
       toast({
         description: 'Category deleted successfully',
+        duration: 2000,
       });
     } catch (error) {
       console.error('Error deleting product:', error);

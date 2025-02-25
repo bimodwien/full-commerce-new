@@ -75,7 +75,7 @@ const EditProduct = () => {
         await axiosInstance().patch(`/products/${id}`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
-        toast({ description: 'Product updated successfully' });
+        toast({ description: 'Product updated successfully', duration: 1000 });
         router.push('/dashboard?refresh=true');
       } catch (error) {
         console.error('Error submitting form:', error);

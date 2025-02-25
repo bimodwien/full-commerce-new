@@ -36,6 +36,7 @@ function CreateCategory() {
         await axiosInstance().post('/categories', values);
         toast({
           description: 'Category created successfully',
+          duration: 1000,
         });
         router.push('/dashboard/category');
       } catch (error) {

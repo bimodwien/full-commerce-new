@@ -51,6 +51,7 @@ function EditCategory() {
         const { data } = await axiosInstance().put(`/categories/${id}`, values);
         toast({
           description: 'Category updated successfully',
+          duration: 1000,
         });
         router.push('/dashboard/category');
       } catch (error) {

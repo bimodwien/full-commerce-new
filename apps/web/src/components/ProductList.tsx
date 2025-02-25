@@ -97,6 +97,7 @@ export function ProductList() {
       setTotalPages(response.products.totalPages);
       toast({
         description: 'Product deleted successfully',
+        duration: 2000,
       });
     } catch (error) {
       console.error(error);

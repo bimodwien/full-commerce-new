@@ -80,6 +80,7 @@ function CreateProduct() {
         );
         toast({
           description: 'Product created successfully',
+          duration: 1000,
         });
         router.push('/dashboard');
       } catch (error) {
