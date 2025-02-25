@@ -21,7 +21,11 @@ export function middleware(request: NextRequest) {
     return response;
   };
 
-  if (pathname === '/login' || pathname === '/login/') {
+  if (
+    pathname === '/login' ||
+    pathname === '/login/' ||
+    pathname === '/register'
+  ) {
     const response = NextResponse.next();
     setNoCacheHeaders(response);
     if (token) {
@@ -103,6 +107,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/login',
+    '/register',
     '/',
     '/dashboard/:path*',
     '/cart/:path*',

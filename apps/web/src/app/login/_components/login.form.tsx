@@ -84,7 +84,9 @@ const LoginForm = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
           <div className="absolute bottom-8 left-8 right-8">
-            <p className="text-white text-sm opacity-80">TokoPaBimo, 2025</p>
+            <Link href="/">
+              <p className="text-white text-sm opacity-80">TokoPaBimo, 2025</p>
+            </Link>
           </div>
         </div>
         <div className="md:w-1/2 bg-white p-8 flex flex-col justify-center min-h-screen">
