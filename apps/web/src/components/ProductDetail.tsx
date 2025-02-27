@@ -115,7 +115,7 @@ const ProductDetail = () => {
               src={`http://localhost:8000/api/products/images/${product?.id}?t=${timestamp}`}
               alt={product?.name || 'Product image'}
               fill
-              className="object-contain"
+              className="object-contain md:h-full"
             />
           </div>
         </div>
@@ -136,7 +136,7 @@ const ProductDetail = () => {
           </p>
           <p className="text-lg text-gray-600 mb-6">{product?.description}</p>
           <p className="text-lg text-gray-500 mb-8">Stock: {product?.stock}</p>
-          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4">
             <Button
               className="flex-grow text-lg py-4"
               onClick={handleAddToCart}

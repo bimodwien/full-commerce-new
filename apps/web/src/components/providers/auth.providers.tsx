@@ -21,13 +21,10 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (authState.role === 'user') {
-      console.log(
-        `AuthProvider: Fetching user data. Role: ${authState.role}, ID: ${authState.id}`,
-      );
       dispatch(fetchCart());
       dispatch(fetchFavorite());
     }
-  }, [dispatch, authState.role, authState.id]);
+  }, [dispatch, authState.role]);
 
   return <>{children}</>;
 };
