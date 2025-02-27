@@ -115,7 +115,7 @@ const ProductDetail = () => {
               src={`http://localhost:8000/api/products/images/${product?.id}?t=${timestamp}`}
               alt={product?.name || 'Product image'}
               fill
-              className="object-contain md:h-full"
+              className="object-contain"
             />
           </div>
         </div>
