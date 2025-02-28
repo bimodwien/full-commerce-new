@@ -1,13 +1,12 @@
 'use client';
 import React from 'react';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { logout } from '@/lib/redux/slices/user.slice';
 import { Button } from './ui/button';
 import { LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { resetCart } from '@/lib/redux/slices/cart.slice';
 import { resetWishlist } from '@/lib/redux/slices/wishlist.slice';
-import { useRouter } from 'next/navigation';
 
 const Logout = ({
   showText = true,
@@ -19,8 +18,8 @@ const Logout = ({
   className?: string;
 }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth);
   const { toast } = useToast();
-  const router = useRouter();
   const timeout = 1000;
 
   async function loggingout() {
@@ -32,7 +31,7 @@ const Logout = ({
 
     toast({
       title: 'Logout success!',
-      description: 'You have logged out successfully',
+      description: `You have logged out successfully, ${user.username}!`,
       duration: 800,
     });
 

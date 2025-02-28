@@ -1,5 +1,5 @@
 import { TProduct } from '@/models/product.model';
-import { axiosInstance } from '@/lib/axios';
+import { axiosInstance, axiosPublicInstance } from '@/lib/axios';
 
 interface ApiResponse {
   products: {
@@ -16,10 +16,14 @@ export async function fetchProduct(
   limit: number,
   name: string,
 ): Promise<ApiResponse> {
-  const axios = axiosInstance();
+  console.log(
+    `Fetching products: page=${page}, limit=${limit}, search=${name}`,
+  );
+  const axios = axiosPublicInstance();
   const { data } = await axios.get<ApiResponse>('/products', {
     params: { page, limit, name },
   });
+  console.log('✅ API Response: ', data);
   return data;
 }
 

@@ -111,6 +111,7 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
                   width={400}
                   height={400}
                   className="object-cover w-full h-48 rounded-t-lg transition-transform duration-300 group-hover:scale-105"
+                  loading="eager"
                 />
                 <Button
                   variant="ghost"
