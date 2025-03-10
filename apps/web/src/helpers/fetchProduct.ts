@@ -16,14 +16,10 @@ export async function fetchProduct(
   limit: number,
   name: string,
 ): Promise<ApiResponse> {
-  console.log(
-    `Fetching products: page=${page}, limit=${limit}, search=${name}`,
-  );
   const axios = axiosPublicInstance();
   const { data } = await axios.get<ApiResponse>('/products', {
     params: { page, limit, name },
   });
-  console.log('✅ API Response: ', data);
   return data;
 }
 
