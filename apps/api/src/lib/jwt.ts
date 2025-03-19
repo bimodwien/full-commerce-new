@@ -1,5 +1,5 @@
 import { sign, SignOptions } from 'jsonwebtoken';
-import { SECRET_KEY } from '../config/index';
+import { SECRET_KEY } from '../config';
 
 export const createToken = (
   payload: any,

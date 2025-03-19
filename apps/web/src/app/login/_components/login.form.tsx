@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAppDispatch } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { userLogin } from '@/lib/redux/middleware/auth.middleware';
 import { AxiosError } from 'axios';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,12 +19,14 @@ import { useRouter } from 'next/navigation';
 const LoginForm = () => {
   const { toast } = useToast();
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth);
   const router = useRouter();
   const timeout = 1000;
   const initialValues = {
     username: '',
     password: '',
   };
+  console.log(user);
 
   const formik = useFormik({
     initialValues,
@@ -40,6 +42,10 @@ const LoginForm = () => {
         await dispatch(
           userLogin({ username: values.username, password: values.password }),
         );
+        let targetPath = '/';
+        if (user.role === 'admin') {
+          targetPath = '/dashboard';
+        }
         toast({
           title: 'Login Success',
           description: `Welcome to TokoPaBimo, ${values.username}!`,
@@ -49,7 +55,7 @@ const LoginForm = () => {
         await new Promise((resolve) => setTimeout(resolve, 100));
         sessionStorage.setItem('justLoggedIn', 'true');
         setTimeout(() => {
-          router.replace('/');
+          router.replace(targetPath);
         }, timeout);
       } catch (error) {
         let errorMessage = 'There was an error logging in. Please try again.';

@@ -3,7 +3,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { TDecode } from '@/models/user.model';
-import { SECRET_KEY } from '../config/index';
+import { SECRET_KEY } from '../config';
 
 export const validateToken = (
   req: Request,
