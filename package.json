@@ -15,14 +15,14 @@
     "@commitlint/config-conventional": "^19.8.0",
     "eslint": "^9.24.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
-    "tsc-alias": "^1.8.13",
+    "tsc-alias": "^1.8.15",
     "tsconfig": "*",
     "turbo": "latest"
   },
   "name": "finpro-nextjs-express-prisma",
-  "packageManager": "npm@11.2.0",
+  "packageManager": "npm@11.3.0",
   "workspaces": [
     "apps/*",
     "packages/*"
