@@ -8,7 +8,7 @@ import express, {
   Router,
 } from 'express';
 import cors from 'cors';
-import { corsOption } from './config/index';
+import { corsOption } from './config';
 import { PORT } from './config';
 import { SampleRouter } from './routers/sample.router';
 import { UserRouter } from './routers/user.router';
