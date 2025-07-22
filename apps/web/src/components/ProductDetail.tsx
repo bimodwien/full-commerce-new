@@ -108,9 +108,10 @@ const ProductDetail = () => {
     });
   };
 
-  const handleBackToHome = () => {
-    router.push('/');
-  };
+  const ts =
+    typeof product?.updatedAt === 'string'
+      ? new Date(product.updatedAt).getTime()
+      : timestamp;
 
   return (
     <div className="max-w-7xl w-full">
@@ -126,7 +127,7 @@ const ProductDetail = () => {
           <div className="md:w-1/2">
             <div className="relative w-full aspect-square">
               <Image
-                src={`http://localhost:8000/api/products/images/${product?.id}?t=${timestamp}`}
+                src={`http://localhost:8000/api/products/images/${product?.id}?t=${ts}`}
                 alt={product?.name || 'Product image'}
                 fill
                 className="object-contain"

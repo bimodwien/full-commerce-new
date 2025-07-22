@@ -1,7 +1,7 @@
 'use strict';
 
 import ProductService from '@/services/product.service';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 
 export class ProductController {
   getAll = async (req: Request, res: Response, next: NextFunction) => {
@@ -64,11 +64,31 @@ export class ProductController {
     }
   };
 
-  render = async (req: Request, res: Response, next: NextFunction) => {
+  render: RequestHandler = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
-      const blob = await ProductService.render(req);
+      const { productImage, updatedAt } = await ProductService.render(req);
+
+      const etag = `"${updatedAt.getTime()}"`;
+      res.setHeader('ETag', etag);
+
+      res.setHeader('Last-Modified', updatedAt.toUTCString());
+
+      res.setHeader(
+        'Cache-Control',
+        'public, max-age=3600, stale-while-revalidate=86400',
+      );
+
+      if (req.headers['if-none-match'] === etag) {
+        res.status(304).end();
+        return;
+      }
+
       res.writeHead(200, { 'Content-Type': 'image/png' });
-      res.end(blob, 'binary');
+      res.end(productImage, 'binary');
     } catch (error) {
       next(error);
     }

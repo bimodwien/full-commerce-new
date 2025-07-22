@@ -6,6 +6,7 @@ export type TProduct = {
   description: string;
   price: number;
   stock: number;
+  updatedAt: string;
   productImage?: string;
   Category?: TCategory;
 };

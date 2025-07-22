@@ -21,6 +21,7 @@ class ProductService {
         price: true,
         stock: true,
         description: true,
+        updatedAt: true,
         Category: {
           select: {
             id: true,
@@ -49,6 +50,7 @@ class ProductService {
         description: true,
         price: true,
         stock: true,
+        updatedAt: true,
         Category: {
           select: {
             id: true,
@@ -137,10 +139,18 @@ class ProductService {
   }
 
   static async render(req: Request) {
-    const data = await prisma.product.findUnique({
-      where: { id: String(req.params.id) },
+    const id = String(req.params.id);
+    const result = await prisma.product.findUnique({
+      where: { id },
+      select: {
+        productImage: true,
+        updatedAt: true,
+      },
     });
-    return data?.productImage;
+    if (!result?.productImage) {
+      throw new Error('Product image not found');
+    }
+    return result;
   }
 }
 

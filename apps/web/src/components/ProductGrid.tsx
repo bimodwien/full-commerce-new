@@ -101,12 +101,16 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {products.map((product) => {
         const favorited = isFavorited(product.id);
+        const ts =
+          typeof product.updatedAt === 'string'
+            ? new Date(product.updatedAt).getTime()
+            : Date.now();
         return (
           <Link href={`/details/${product.id}`} key={product.id}>
             <Card className="flex flex-col h-full group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
               <CardHeader className="relative p-0 overflow-hidden">
                 <Image
-                  src={`http://localhost:8000/api/products/images/${product.id}?timestamp=${timestamp}`}
+                  src={`http://localhost:8000/api/products/images/${product.id}?v=${ts}`}
                   alt={product.name}
                   width={400}
                   height={400}
