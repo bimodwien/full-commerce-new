@@ -91,7 +91,7 @@ const LoginForm = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
           <div className="absolute bottom-8 left-8 right-8">
             <Link href="/">
-              <p className="text-white text-sm opacity-80">TokoPaBimo, 2025</p>
+              <p className="text-white text-sm opacity-80">TokoPakBimo, 2025</p>
             </Link>
           </div>
         </div>
@@ -100,7 +100,7 @@ const LoginForm = () => {
             <Link href={'/'}>
               <div className="space-y-2 text-center">
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                  TokoPaBimo
+                  TokoPakBimo
                 </h1>
                 <p className="text-sm text-gray-600">
                   Sign in to your account to continue

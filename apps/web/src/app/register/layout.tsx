@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Register',
-  description: 'Tokopabimo register with Next.js',
+  title: 'TokoPakBimo - Register',
+  description: 'Tokopakbimo register with Next.js',
 };
 
 export default function RegisterLayout({

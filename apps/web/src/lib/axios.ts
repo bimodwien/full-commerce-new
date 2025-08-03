@@ -5,7 +5,7 @@ export function axiosInstance(): AxiosInstance {
   const token = getCookie('access_token') || '';
   return axios.create({
     baseURL:
-      process.env.NEXT_PUBLIC_BASE_API_URL || 'http://localhost:8000/api',
+      '/api',
     timeout: 10000,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -17,7 +17,7 @@ export function axiosInstance(): AxiosInstance {
 export function axiosPublicInstance(): AxiosInstance {
   return axios.create({
     baseURL:
-      process.env.NEXT_PUBLIC_BASE_API_URL || 'http://localhost:8000/api',
+      '/api',
     timeout: 10000,
   });
 }

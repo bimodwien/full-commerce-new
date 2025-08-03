@@ -9,7 +9,7 @@ export function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4">About Us</h3>
             <p className="text-gray-300 text-sm">
-              TokoPaBimo is an e-commerce store dedicated to providing
+              TokoPakBimo is an e-commerce store dedicated to providing
               high-quality products and excellent customer service.
             </p>
           </div>

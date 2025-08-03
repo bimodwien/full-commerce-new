@@ -16,8 +16,13 @@ export class UserController {
           access_token,
           refresh_token,
         });
-    } catch (error) {
-      next(error);
+    } catch (err: any) {
+      // next(error);
+      console.error('[Login error]: ', err);
+      return res.status(500).json({
+        message: 'Internal Server Error',
+        error: err.message,
+      });
     }
   };
 

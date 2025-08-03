@@ -72,7 +72,7 @@ const RegisterForm = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
           <div className="absolute bottom-8 left-8 right-8">
-            <p className="text-white text-sm opacity-80">TokoPaBimo, 2025</p>
+            <p className="text-white text-sm opacity-80">TokoPakBimo, 2025</p>
           </div>
         </div>
         <div className="md:w-1/2 bg-white p-8 flex flex-col justify-center min-h-screen">
@@ -80,7 +80,7 @@ const RegisterForm = () => {
             <Link href={'/'}>
               <div className="space-y-2 text-center">
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                  TokoPaBimo
+                  TokoPakBimo
                 </h1>
                 <p className="text-sm text-gray-600">
                   Create your account to get started

@@ -127,7 +127,8 @@ const ProductDetail = () => {
           <div className="md:w-1/2">
             <div className="relative w-full aspect-square">
               <Image
-                src={`http://localhost:8000/api/products/images/${product?.id}?t=${ts}`}
+                src={`/api/products/images/${product?.id}?t=${ts}`}
+                // src={`http://localhost:8000/api/products/images/${product?.id}?t=${ts}`}
                 alt={product?.name || 'Product image'}
                 fill
                 className="object-contain"

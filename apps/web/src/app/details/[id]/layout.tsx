@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Detail Product',
-  description: 'Tokopabimo detail product with Next.js',
+  title: 'TokoPakBimo - Detail Product',
+  description: 'Tokopakbimo detail product with Next.js',
 };
 
 export default function DetailLayout({

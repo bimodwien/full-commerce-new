@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import Head from 'next/head';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Login',
-  description: 'Tokopabimo login with Next.js',
+  title: 'TokoPakBimo - Login',
+  description: 'Tokopakbimo login with Next.js',
 };
 
 export default function LoginLayout({

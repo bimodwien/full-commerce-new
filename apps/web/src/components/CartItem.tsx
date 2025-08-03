@@ -65,7 +65,8 @@ const CartItem = ({ item }: CartItemsProp) => {
           <div className="flex items-center mb-4 sm:mb-0">
             <Link href={`/details/${item.Product.id}`}>
               <Image
-                src={`http://localhost:8000/api/products/images/${item.Product?.id}?timestamp=${Date.now()}`}
+                src={`/api/products/images/${item.Product?.id}?timestamp=${Date.now()}`}
+                // src={`http://localhost:8000/api/products/images/${item.Product?.id}?timestamp=${Date.now()}`}
                 alt={item.Product.name || 'Photo'}
                 width={100}
                 height={100}

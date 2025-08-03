@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Cart',
-  description: 'Tokopabimo see all cart with Next.js',
+  title: 'TokoPakBimo - Cart',
+  description: 'Tokopakbimo see all cart with Next.js',
 };
 
 export default function CartLayout({

@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - '3307:3306'
+
+  api:
+    build:
+      context: ./apps/api
+    restart: always
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD}@db:3306/${MYSQL_DATABASE}
+      PORT: 8000
+      SECRET_KEY: ${SECRET_KEY}
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ./apps/web
+      args:
+        NEXT_PUBLIC_BASE_API_URL: 'http://api:8000/api'
+    restart: always
+    env_file:
+      - .env
+    environment:
+      NEXT_PUBLIC_BASE_API_URL: http://api:8000/api
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+
+volumes:
+  db_data:

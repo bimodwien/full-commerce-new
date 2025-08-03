@@ -33,7 +33,7 @@ export function Sidebar() {
     <ShadcnSidebar className="w-64 h-screen flex flex-col">
       <SidebarHeader>
         <Link href={'/dashboard'}>
-          <h2 className="text-xl font-bold py-4 px-2">TokoPaBimo</h2>
+          <h2 className="text-xl font-bold py-4 px-2">TokoPakBimo</h2>
         </Link>
       </SidebarHeader>
       <SidebarContent className="flex-grow">

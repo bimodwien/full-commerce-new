@@ -104,7 +104,7 @@ const EditProduct = () => {
         });
         setCategories(categoryResponse.category.data);
         setImagePreview(
-          `http://localhost:8000/api/products/images/${productData.id}?timestamp=${Date.now()}`,
+          `/api/products/images/${productData.id}?timestamp=${Date.now()}`,
         );
 
         formikRef.current?.setFieldValue(

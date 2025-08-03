@@ -60,7 +60,8 @@ const FavoriteList = ({ favorite }: FavoriteListProps) => {
             <Card className="flex flex-col group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
               <CardHeader className="relative p-0 overflow-hidden">
                 <Image
-                  src={`http://localhost:8000/api/products/images/${product.Product?.id}?timestamp=${Date.now()}`}
+                  src={`/api/products/images/${product.Product?.id}?timestamp=${Date.now()}`}
+                  // src={`http://localhost:8000/api/products/images/${product.Product?.id}?timestamp=${Date.now()}`}
                   alt={product.Product?.name || 'Product Image'}
                   width={400}
                   height={400}

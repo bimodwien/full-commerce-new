@@ -110,7 +110,8 @@ const ProductGrid = ({ products, timestamp }: ProductGridProps) => {
             <Card className="flex flex-col h-full group hover:shadow-2xl transition-shadow duration-300 cursor-pointer">
               <CardHeader className="relative p-0 overflow-hidden">
                 <Image
-                  src={`http://localhost:8000/api/products/images/${product.id}?v=${ts}`}
+                  src={`/api/products/images/${product.id}?v=${ts}`}
+                  // src={`http://localhost:8000/api/products/images/${product.id}?v=${ts}`}
                   alt={product.name}
                   width={400}
                   height={400}

@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Create Product',
-  description: 'Tokopabimo create new product with Next.js',
+  title: 'TokoPakBimo - Create Product',
+  description: 'Tokopakbimo create new product with Next.js',
 };
 
 export default function CreateProductLayout({

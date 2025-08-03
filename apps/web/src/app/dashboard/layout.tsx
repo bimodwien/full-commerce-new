@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Dashboard',
-  description: 'Tokopabimo dashboard with Next.js',
+  title: 'TokoPakBimo - Dashboard',
+  description: 'Tokopakbimo dashboard with Next.js',
 };
 
 export default function DashboardLayout({

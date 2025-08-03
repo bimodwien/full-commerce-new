@@ -138,7 +138,8 @@ export function ProductList() {
                 <TableRow key={product.id}>
                   <TableCell>
                     <Image
-                      src={`http://localhost:8000/api/products/images/${product.id}?t=${timestamp}`}
+                      src={`/api/products/images/${product.id}?t=${timestamp}`}
+                      // src={`http://localhost:8000/api/products/images/${product.id}?t=${timestamp}`}
                       alt={product.name}
                       width={100}
                       height={100}

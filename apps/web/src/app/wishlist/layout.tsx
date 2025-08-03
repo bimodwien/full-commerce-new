@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'TokoPaBimo - Wishlist',
-  description: 'Tokopabimo see wishlist with Next.js',
+  title: 'TokoPakBimo - Wishlist',
+  description: 'Tokopakbimo see wishlist with Next.js',
 };
 
 export default function WishlistLayout({
